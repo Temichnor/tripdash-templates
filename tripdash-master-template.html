@@ -22,7 +22,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--light);color:var(--dark);}
-.demo-ribbon{background:var(--secondary);color:#fff;text-align:center;padding:8px;font-size:0.82rem;font-weight:700;letter-spacing:.5px;}
+
 header{background:var(--header-grad);position:relative;padding:40px 24px 32px;text-align:center;overflow:hidden;}
 header::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.55),rgba(0,0,0,0.3));}
 .header-content{position:relative;z-index:1;}
@@ -32,11 +32,11 @@ header p{color:rgba(255,255,255,0.9);font-size:1rem;margin-top:6px;}
 .badge{background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);color:#fff;padding:5px 14px;border-radius:20px;font-size:0.82rem;border:1px solid rgba(255,255,255,0.35);font-weight:600;}
 .badge.live{background:rgba(27,58,107,0.6);border-color:#93c5fd;}
 .badge.pending{background:rgba(240,165,0,0.6);border-color:#fbbf24;}
-.lang-switcher{display:flex;align-items:center;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
-.lang-label{color:rgba(255,255,255,0.8);font-size:1rem;}
-.lang-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:3px 10px;border-radius:14px;font-size:0.78rem;cursor:pointer;transition:all .18s;font-weight:600;}
-.lang-btn:hover{background:rgba(255,255,255,0.28);}
-.lang-btn.active{background:rgba(255,255,255,0.32);border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,0.3);}
+
+
+
+
+
 .occasion-banner{display:none;text-align:center;padding:11px 20px;font-weight:700;font-size:0.95rem;color:#fff;}
 .occasion-banner.birthday{background:linear-gradient(90deg,#7c3aed,#db2777);}
 .occasion-banner.anniversary{background:linear-gradient(90deg,#dc2626,#f97316);}
@@ -211,12 +211,10 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 footer{background:var(--dark);color:rgba(255,255,255,0.55);text-align:center;padding:18px;font-size:0.78rem;}
 footer strong{color:#ffd700;}
 footer a{color:#ffd700;}
-#lang-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dark);color:#ffd700;padding:12px 24px;border-radius:12px;font-weight:700;font-size:0.9rem;z-index:9998;display:none;box-shadow:0 4px 20px rgba(0,0,0,0.4);}
 </style>
 </head>
 <body>
 
-<div class="demo-ribbon">&#127775; TRIPDASH DEMO &#8212; Your personal travel dashboard &middot; tripdash.ink</div>
 <div class="occasion-banner" id="occasion-banner"></div>
 <header>
   <div class="header-content">
@@ -224,11 +222,9 @@ footer a{color:#ffd700;}
     <h1 id="header-title">Loading...</h1>
     <p id="header-sub"></p>
     <div class="header-badges" id="header-badges"></div>
-    <div class="lang-switcher" id="lang-switcher"><span class="lang-label">&#127760;</span></div>
   </div>
 </header>
 <div class="countdown-bar" id="countdown">&#9203; Loading...</div>
-<div id="lang-toast"></div>
 
 <nav id="main-nav">
   <button class="active" onclick="showSection('overview',this)">&#128203; Overview</button>
@@ -311,7 +307,7 @@ footer a{color:#ffd700;}
 
 <section id="packing" class="section">
   <div class="card">
-    <h2>&#9989; Packing List</h2>
+    <h2>&#9989; <span id="lbl-packing">Packing List</span></h2>
     <div class="check-progress"><div class="check-progress-bar" id="pack-bar" style="width:0%"></div></div>
     <p class="check-progress-label" id="pack-label">0 of 0 packed</p>
     <div id="packing-lists"></div>
@@ -322,13 +318,13 @@ footer a{color:#ffd700;}
 
 <section id="tips" class="section">
   <div id="occasion-tips-section"></div>
-  <div class="card"><h2>&#128161; General Travel Tips</h2><div id="general-tips-list"></div></div>
+  <div class="card"><h2>&#128161; <span id="lbl-tips">General Travel Tips</span></h2><div id="general-tips-list"></div></div>
 </section>
 
 <section id="info" class="section">
-  <div class="card"><h2>&#128680; Emergency Contacts</h2><div class="emergency-grid" id="emergency-grid"></div></div>
-  <div class="card"><h2>&#127758; Country Information</h2><table class="info-table" id="info-table"></table></div>
-  <div class="card"><h2>&#128203; Booking References</h2><div id="booking-refs"></div></div>
+  <div class="card"><h2>&#128680; <span id="lbl-emergency">Emergency Contacts</span></h2><div class="emergency-grid" id="emergency-grid"></div></div>
+  <div class="card"><h2>&#127758; <span id="lbl-country">Country Information</span></h2><table class="info-table" id="info-table"></table></div>
+  <div class="card"><h2>&#128203; <span id="lbl-bookrefs">Booking References</span></h2><div id="booking-refs"></div></div>
 </section>
 
 <section id="map" class="section">
@@ -636,6 +632,143 @@ const occasionData = {
   }
 };
 
+
+// ============================================================
+//  I18N — MULTILINGUAL SUPPORT
+// ============================================================
+const I18N = {
+  en: {
+    packingList:'Packing List', packed:(n,t)=>`${n} of ${t} packed`,
+    generalTips:'General Travel Tips', emergencyContacts:'Emergency Contacts',
+    countryInfo:'Country Information', bookingRefs:'Booking References',
+    maybe:'? Maybe', planned:'✓ Planned', all:'🌍 All',
+    nights_in:(dest)=>`Nights in ${dest}`, travellers:'Travellers',
+    placesToExplore:'Places to explore', confirmedPaid:'✅ Confirmed paid',
+    notPaidYet:'Not paid yet', budgetOverview:'💰 Budget Overview',
+    budgetBreakdown:'💰 Budget breakdown', totalBudget:'Total budget',
+    rentalDetails:'Rental details', pickupDate:'Pick-up date',
+    returnDate:'Return date', pickupLocation:'Pick-up location',
+    passengers:'Passengers', adult:'Adult', child:'Child',
+    confirmed:'Confirmed', stillToArrange:'Still to arrange',
+    beach:'🏖️ Beach', culture:'🏛️ Culture', nature:'⛰️ Nature',
+    food:'🍽️ Food', activity:'🎡 Activity', shopping:'🛍️ Shopping',
+    sightseeing:'🏛️ Sightseeing',
+    noCarNeeded:'No car rental needed for this trip.',
+    tripMap:(dest)=>`${dest} — Trip Map`,
+    fullItinerary:(n,dest)=>`${n} nights — ${dest}`
+  },
+  ru: {
+    packingList:'Список вещей', packed:(n,t)=>`${n} из ${t} собрано`,
+    generalTips:'Общие советы путешественника', emergencyContacts:'Экстренные контакты',
+    countryInfo:'Информация о стране', bookingRefs:'Подтверждения бронирований',
+    maybe:'? Возможно', planned:'✓ Запланировано', all:'🌍 Все',
+    nights_in:(dest)=>`Ночей в ${dest}`, travellers:'Путешественников',
+    placesToExplore:'Мест для посещения', confirmedPaid:'✅ Подтверждено оплачено',
+    notPaidYet:'Не оплачено', budgetOverview:'💰 Обзор бюджета',
+    budgetBreakdown:'💰 Разбивка бюджета', totalBudget:'Общий бюджет',
+    rentalDetails:'Детали аренды', pickupDate:'Дата получения',
+    returnDate:'Дата возврата', pickupLocation:'Место получения',
+    passengers:'Пассажиры', adult:'Взрослый', child:'Ребёнок',
+    confirmed:'Подтверждено', stillToArrange:'Осталось организовать',
+    beach:'🏖️ Пляж', culture:'🏛️ Культура', nature:'⛰️ Природа',
+    food:'🍽️ Еда', activity:'🎡 Активности', shopping:'🛍️ Шопинг',
+    sightseeing:'🏛️ Достопримечательности',
+    noCarNeeded:'Аренда авто не нужна для этой поездки.',
+    tripMap:(dest)=>`${dest} — Карта маршрута`,
+    fullItinerary:(n,dest)=>`${n} ночей — ${dest}`
+  },
+  no: {
+    packingList:'Pakkeliste', packed:(n,t)=>`${n} av ${t} pakket`,
+    generalTips:'Generelle reiseråd', emergencyContacts:'Nødkontakter',
+    countryInfo:'Landsinformasjon', bookingRefs:'Bestillingsreferanser',
+    maybe:'? Kanskje', planned:'✓ Planlagt', all:'🌍 Alle',
+    nights_in:(dest)=>`Netter i ${dest}`, travellers:'Reisende',
+    placesToExplore:'Steder å utforske', confirmedPaid:'✅ Bekreftet betalt',
+    notPaidYet:'Ikke betalt ennå', budgetOverview:'💰 Budsjettoppsummering',
+    budgetBreakdown:'💰 Budsjettfordeling', totalBudget:'Totalbudsjett',
+    rentalDetails:'Leiebildetaljer', pickupDate:'Hentedato',
+    returnDate:'Returdato', pickupLocation:'Hentested',
+    passengers:'Passasjerer', adult:'Voksen', child:'Barn',
+    confirmed:'Bekreftet', stillToArrange:'Gjenstår å ordne',
+    beach:'🏖️ Strand', culture:'🏛️ Kultur', nature:'⛰️ Natur',
+    food:'🍽️ Mat', activity:'🎡 Aktivitet', shopping:'🛍️ Shopping',
+    sightseeing:'🏛️ Severdigheter',
+    noCarNeeded:'Leiebil ikke nødvendig for denne turen.',
+    tripMap:(dest)=>`${dest} — Reisekart`,
+    fullItinerary:(n,dest)=>`${n} netter — ${dest}`
+  },
+  de: {
+    packingList:'Packliste', packed:(n,t)=>`${n} von ${t} eingepackt`,
+    generalTips:'Allgemeine Reisetipps', emergencyContacts:'Notfallkontakte',
+    countryInfo:'Länderinformationen', bookingRefs:'Buchungsreferenzen',
+    maybe:'? Vielleicht', planned:'✓ Geplant', all:'🌍 Alle',
+    nights_in:(dest)=>`Nächte in ${dest}`, travellers:'Reisende',
+    placesToExplore:'Orte zu erkunden', confirmedPaid:'✅ Bestätigt bezahlt',
+    notPaidYet:'Noch nicht bezahlt', budgetOverview:'💰 Budgetübersicht',
+    budgetBreakdown:'💰 Budgetaufschlüsselung', totalBudget:'Gesamtbudget',
+    rentalDetails:'Mietdetails', pickupDate:'Abholdatum',
+    returnDate:'Rückgabedatum', pickupLocation:'Abholort',
+    passengers:'Passagiere', adult:'Erwachsener', child:'Kind',
+    confirmed:'Bestätigt', stillToArrange:'Noch zu organisieren',
+    beach:'🏖️ Strand', culture:'🏛️ Kultur', nature:'⛰️ Natur',
+    food:'🍽️ Essen', activity:'🎡 Aktivität', shopping:'🛍️ Einkaufen',
+    sightseeing:'🏛️ Sehenswürdigkeiten',
+    noCarNeeded:'Kein Mietwagen erforderlich.',
+    tripMap:(dest)=>`${dest} — Reisekarte`,
+    fullItinerary:(n,dest)=>`${n} Nächte — ${dest}`
+  },
+  es: {
+    packingList:'Lista de equipaje', packed:(n,t)=>`${n} de ${t} empacado`,
+    generalTips:'Consejos de viaje', emergencyContacts:'Contactos de emergencia',
+    countryInfo:'Información del país', bookingRefs:'Referencias de reserva',
+    maybe:'? Quizás', planned:'✓ Planificado', all:'🌍 Todo',
+    nights_in:(dest)=>`Noches en ${dest}`, travellers:'Viajeros',
+    placesToExplore:'Lugares por explorar', confirmedPaid:'✅ Confirmado pagado',
+    notPaidYet:'Sin pagar', budgetOverview:'💰 Resumen del presupuesto',
+    budgetBreakdown:'💰 Desglose del presupuesto', totalBudget:'Presupuesto total',
+    rentalDetails:'Detalles del alquiler', pickupDate:'Fecha de recogida',
+    returnDate:'Fecha de devolución', pickupLocation:'Lugar de recogida',
+    passengers:'Pasajeros', adult:'Adulto', child:'Niño',
+    confirmed:'Confirmado', stillToArrange:'Por organizar',
+    beach:'🏖️ Playa', culture:'🏛️ Cultura', nature:'⛰️ Naturaleza',
+    food:'🍽️ Comida', activity:'🎡 Actividad', shopping:'🛍️ Compras',
+    sightseeing:'🏛️ Turismo',
+    noCarNeeded:'No se necesita alquiler de coche.',
+    tripMap:(dest)=>`${dest} — Mapa del viaje`,
+    fullItinerary:(n,dest)=>`${n} noches — ${dest}`
+  },
+  fr: {
+    packingList:'Liste de bagages', packed:(n,t)=>`${n} sur ${t} emballé`,
+    generalTips:'Conseils de voyage', emergencyContacts:"Contacts d'urgence",
+    countryInfo:'Informations sur le pays', bookingRefs:'Références de réservation',
+    maybe:'? Peut-être', planned:'✓ Prévu', all:'🌍 Tout',
+    nights_in:(dest)=>`Nuits à ${dest}`, travellers:'Voyageurs',
+    placesToExplore:'Lieux à explorer', confirmedPaid:'✅ Confirmé payé',
+    notPaidYet:'Pas encore payé', budgetOverview:'💰 Aperçu du budget',
+    budgetBreakdown:'💰 Détail du budget', totalBudget:'Budget total',
+    rentalDetails:'Détails de la location', pickupDate:'Date de prise en charge',
+    returnDate:'Date de retour', pickupLocation:'Lieu de prise en charge',
+    passengers:'Passagers', adult:'Adulte', child:'Enfant',
+    confirmed:'Confirmé', stillToArrange:"À organiser",
+    beach:'🏖️ Plage', culture:'🏛️ Culture', nature:'⛰️ Nature',
+    food:'🍽️ Nourriture', activity:'🎡 Activité', shopping:'🛍️ Shopping',
+    sightseeing:'🏛️ Tourisme',
+    noCarNeeded:'Pas besoin de location de voiture.',
+    tripMap:(dest)=>`${dest} — Carte du voyage`,
+    fullItinerary:(n,dest)=>`${n} nuits — ${dest}`
+  }
+};
+let LNG = 'en';
+function t(key){ const d=(I18N[LNG]||I18N.en); return d[key]!==undefined?d[key]:((I18N.en)[key]||key); }
+function toFlagEmoji(code){
+  if(!code) return '';
+  if(code.length!==2) return code; // already an emoji or unknown
+  // Check if it's already an emoji (codepoint > 127)
+  if(code.codePointAt(0)>127) return code;
+  try{ return String.fromCodePoint(...[...code.toUpperCase()].map(c=>127397+c.charCodeAt(0))); }
+  catch(e){ return code; }
+}
+
 // ============================================================
 //  RENDERING ENGINE
 // ============================================================
@@ -652,7 +785,7 @@ function openModal(placeId){
   const p = trip.places.find(x=>x.id===placeId); if(!p) return;
   el('modal-img').src = p.imageUrl||'';
   el('modal-title').textContent = p.emoji+' '+p.name;
-  el('modal-meta').innerHTML = `<span class="modal-tag green">${p.status==='planned'?'✓ Planned':'? Maybe'}</span><span class="modal-tag blue">${catLabel(p.category)}</span>`;
+  el('modal-meta').innerHTML = `<span class="modal-tag green">${p.status==='planned'?t('planned'):t('maybe')}</span><span class="modal-tag blue">${catLabel(p.category)}</span>`;
   el('modal-desc').textContent = p.description||'';
   if(p.tip){ el('modal-tip').style.display='flex'; el('modal-tip-text').textContent=p.tip; }
   else { el('modal-tip').style.display='none'; }
@@ -660,7 +793,10 @@ function openModal(placeId){
   el('place-modal-backdrop').classList.add('open');
 }
 function closeModal(){ el('place-modal-backdrop').classList.remove('open'); }
-function catLabel(c){ return ({beach:'🏖️ Beach',culture:'🏛️ Culture',nature:'⛰️ Nature',food:'🍽️ Food',activity:'🎡 Activity',shopping:'🛍️ Shopping'})[c]||c; }
+function catLabel(c){
+  const map={beach:t('beach'),culture:t('culture'),nature:t('nature'),food:t('food'),activity:t('activity'),shopping:t('shopping'),sightseeing:t('sightseeing')};
+  return map[c]||c;
+}
 function stars(n){ return '⭐'.repeat(n||4); }
 
 function updateCountdown(){
@@ -673,8 +809,8 @@ function updateCountdown(){
 }
 
 function renderHeader(){
-  el('header-flag').textContent = trip.destination.flag;
-  el('header-title').textContent = trip.destination.flag+' '+trip.destination.name+' '+new Date(trip.dates.departure).getFullYear();
+  el('header-flag').textContent = toFlagEmoji(trip.destination.flag);
+  el('header-title').textContent = toFlagEmoji(trip.destination.flag)+' '+trip.destination.name+' '+new Date(trip.dates.departure).getFullYear();
   const names = trip.travelers.map(t=>t.name.split(' ')[0]).join(', ');
   el('header-sub').textContent = names+' · '+trip.dates.departure+' – '+trip.dates.returnDate;
   const occ = trip.occasion.type && occasionData[trip.occasion.type];
@@ -687,23 +823,17 @@ function renderHeader(){
     ${occ?`<span class="badge" style="background:rgba(240,165,0,0.7)">${occ.icon} ${trip.occasion.description}</span>`:''}
   `;
   const langs=[{code:'en',flag:'🇬🇧',label:'EN'},{code:'no',flag:'🇳🇴',label:'NO'},{code:'ru',flag:'🇷🇺',label:'RU'},{code:'de',flag:'🇩🇪',label:'DE'},{code:'es',flag:'🇪🇸',label:'ES'},{code:'fr',flag:'🇫🇷',label:'FR'}];
-  el('lang-switcher').innerHTML='<span class="lang-label">🌐</span>'+langs.map(l=>`<button class="lang-btn ${trip.traveler.language===l.code?'active':''}" onclick="switchLang('${l.code}',this)">${l.flag} ${l.label}</button>`).join('');
   if(occ){ const ob=el('occasion-banner'); ob.textContent=occ.bannerText(trip.occasion); ob.className=`occasion-banner ${trip.occasion.type}`; ob.style.display='block'; }
 }
 
-function switchLang(code, btn){
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
-  const t=el('lang-toast'); t.textContent=`Language: ${code.toUpperCase()} (set per dashboard)`;
-  t.style.display='block'; setTimeout(()=>t.style.display='none',2200);
-}
 
 function renderOverview(){
   const tot=trip.budget.items.reduce((s,i)=>s+i.budgeted,0), paid=trip.budget.items.reduce((s,i)=>s+i.paid,0);
   el('stat-grid').innerHTML=`
-    <div class="stat-box"><div class="num">${trip.dates.nights}</div><div class="lbl">Nights in ${trip.destination.name}</div></div>
-    <div class="stat-box"><div class="num">${trip.travelers.length}</div><div class="lbl">Travellers</div></div>
-    <div class="stat-box"><div class="num">${trip.places.length}</div><div class="lbl">Places to explore</div></div>
-    <div class="stat-box"><div class="num" style="color:var(--secondary)">${trip.budget.currency} ${paid.toLocaleString()}</div><div class="lbl">Confirmed paid</div><div class="sub">of ${trip.budget.currency} ${tot.toLocaleString()} budget</div></div>`;
+    <div class="stat-box"><div class="num">${trip.dates.nights}</div><div class="lbl">${t('nights_in')(trip.destination.name)}</div></div>
+    <div class="stat-box"><div class="num">${trip.travelers.length}</div><div class="lbl">${t('travellers')}</div></div>
+    <div class="stat-box"><div class="num">${trip.places.length}</div><div class="lbl">${t('placesToExplore')}</div></div>
+    <div class="stat-box"><div class="num" style="color:var(--secondary)">${trip.budget.currency} ${paid.toLocaleString()}</div><div class="lbl">${t('confirmedPaid')}</div><div class="sub">of ${trip.budget.currency} ${tot.toLocaleString()} budget</div></div>`;
   const occ=trip.occasion.type&&occasionData[trip.occasion.type];
   el('overview-alerts').innerHTML=`
     <div class="alert success"><span class="icon">✅</span><div><strong>Confirmed:</strong> Flights (ref: ${trip.flights.outbound.bookingRef}) and ${trip.hotel.name} are booked and paid.</div></div>
@@ -746,21 +876,21 @@ function renderOverview(){
     </div></div>`;
   const paid2=trip.budget.items.reduce((s,i)=>s+i.paid,0);
   el('overview-cost').innerHTML=`<h2>💰 Budget Overview</h2>`+
-    trip.budget.items.map(i=>`<div class="cost-row"><span class="cost-label">${i.category}</span><span class="cost-amount">${i.paid>0?trip.budget.currency+' '+i.paid.toLocaleString()+' ✓':'<span class="status-pending">Not paid yet</span>'}</span></div>`).join('')+
-    `<div class="cost-row total"><span class="cost-label">✅ Confirmed paid</span><span class="cost-amount">${trip.budget.currency} ${paid2.toLocaleString()}</span></div>`;
+    trip.budget.items.map(i=>`<div class="cost-row"><span class="cost-label">${i.category}</span><span class="cost-amount">${i.paid>0?trip.budget.currency+' '+i.paid.toLocaleString()+' ✓':'<span class="status-pending">'+t('notPaidYet')+'</span>'}</span></div>`).join('')+
+    `<div class="cost-row total"><span class="cost-label">${t('confirmedPaid')}</span><span class="cost-amount">${trip.budget.currency} ${paid2.toLocaleString()}</span></div>`;
 }
 
 function renderFlights(){
   el('passenger-grid').innerHTML=trip.travelers.map(t=>`<div style="background:${t.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${t.name}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${t.role.charAt(0).toUpperCase()+t.role.slice(1)}${t.age?' · '+t.age+' yrs':''}</div></div>`).join('');
-  function fc(f){ return `<div class="airline">${f.airline} · ${f.flightNumber}</div>
+  function fc(f){ return `<div class="airline">${f.airline||'—'} · ${f.flightNumber||'—'}</div>
     <div class="flight-route">
-      <div class="flight-city"><div class="code">${f.fromCode}</div><div class="name">${f.from}</div><div class="time">${f.departs}</div></div>
-      <div class="flight-line"><div class="plane-line"></div><div class="duration">${f.duration}</div></div>
-      <div class="flight-city"><div class="code">${f.toCode}</div><div class="name">${f.to}</div><div class="time">${f.arrives}</div></div>
+      <div class="flight-city"><div class="code">${f.fromCode||'—'}</div><div class="name">${f.from||'—'}</div><div class="time">${f.departs||'—'}</div></div>
+      <div class="flight-line"><div class="plane-line"></div><div class="duration">${f.duration||'—'}</div></div>
+      <div class="flight-city"><div class="code">${f.toCode||'—'}</div><div class="name">${f.to||'—'}</div><div class="time">${f.arrives||'—'}</div></div>
     </div>
     <div class="flight-meta">
-      <span>📅 <strong>${f.date}</strong></span>
-      <span>📋 Ref: <strong>${f.bookingRef}</strong></span>
+      <span>📅 <strong>${f.date||'—'}</strong></span>
+      <span>📋 Ref: <strong>${f.bookingRef||'—'}</strong></span>
       ${f.terminal?`<span>🚪 Terminal: <strong>${f.terminal}</strong></span>`:''}
       ${f.seat?`<span>💺 Seat: <strong>${f.seat}</strong></span>`:''}
     </div>`; }
@@ -812,9 +942,9 @@ function renderHotel(){
 }
 
 function renderItinerary(){
-  el('itinerary-nights').textContent=trip.dates.nights+' nights — '+trip.destination.name;
+  el('itinerary-nights').textContent=t('fullItinerary')(trip.dates.nights,trip.destination.name);
   el('itinerary-timeline').innerHTML=trip.itinerary.map(d=>{
-    const tags=(d.tags||[]).map(t=>`<span class="tl-tag ${t.style||''}">${t.text}</span>`).join('');
+    const tags=(d.tags||[]).map(t=>typeof t==='string'?`<span class="tl-tag">${t}</span>`:`<span class="tl-tag ${t.style||''}">${t.text}</span>`).join('');
     return `<div class="tl-item">
       <div class="tl-dot ${d.color||'primary'}"></div>
       <div class="tl-date ${d.color||''}">${d.date}</div>
@@ -826,7 +956,7 @@ function renderItinerary(){
 
 function renderPlaces(){
   const cats=['all',...new Set(trip.places.map(p=>p.category))];
-  el('places-filter').innerHTML=cats.map(c=>`<button class="filter-btn ${c==='all'?'active':''}" onclick="filterPlaces('${c}',this)">${c==='all'?'🌍 All':catLabel(c)}</button>`).join('');
+  el('places-filter').innerHTML=cats.map(c=>`<button class="filter-btn ${c==='all'?'active':''}" onclick="filterPlaces('${c}',this)">${c==='all'?t('all'):catLabel(c)}</button>`).join('');
   el('places-tab-btn').textContent=`📍 ${trip.places.length} Places`;
   renderPlaceGrid('all');
 }
@@ -834,7 +964,7 @@ function renderPlaceGrid(f){
   const ps=f==='all'?trip.places:trip.places.filter(p=>p.category===f);
   el('places-grid-wrap').innerHTML=`<div class="grid-3">${ps.map(p=>`
     <div class="place-img-card" onclick="openModal('${p.id}')" style="background-image:url('${p.imageUrl||''}')">
-      <span class="place-status-tag ${p.status==='planned'?'booked':'maybe'}">${p.status==='planned'?'✓ Planned':'? Maybe'}</span>
+      <span class="place-status-tag ${p.status==='planned'?'booked':'maybe'}">${p.status==='planned'?t('planned'):t('maybe')}</span>
       <span class="click-hint">Click</span>
       <div class="place-img-overlay"><span class="emoji">${p.emoji}</span><h4>${p.name}</h4><p class="teaser">${p.teaser||''}</p></div>
     </div>`).join('')}</div>`;
@@ -846,14 +976,14 @@ function filterPlaces(cat,btn){
 
 function renderCar(){
   const c=trip.car;
-  if(!c.needed){ el('car-content').innerHTML=`<div class="alert info"><span class="icon">ℹ️</span><div>No car rental needed for this trip.</div></div>`; return; }
+  if(!c.needed){ el('car-content').innerHTML=`<div class="alert info"><span class="icon">ℹ️</span><div>${t('noCarNeeded')}</div></div>`; return; }
   el('car-tab-btn').style.display='block';
   el('car-content').innerHTML=`
     <div class="alert info"><span class="icon">🚗</span><div><strong>Car rental:</strong> ${c.note||''}</div></div>
-    <div class="card"><h2>📅 Rental details</h2><table class="info-table">
-      <tr><td>Pick-up date</td><td>${c.pickupDate||'—'}</td></tr>
-      <tr><td>Return date</td><td>${c.returnDate||'—'}</td></tr>
-      <tr><td>Pick-up location</td><td>${c.pickupLocation||'—'}</td></tr>
+    <div class="card"><h2>📅 ${t('rentalDetails')}</h2><table class="info-table">
+      <tr><td>${t('pickupDate')}</td><td>${c.pickupDate||'—'}</td></tr>
+      <tr><td>${t('returnDate')}</td><td>${c.returnDate||'—'}</td></tr>
+      <tr><td>${t('pickupLocation')}</td><td>${c.pickupLocation||'—'}</td></tr>
     </table></div>
     <div class="card"><h2>🚗 Vehicle options</h2>${c.options.map(o=>`
       <div class="car-option-card ${o.recommended?'recommended':''}">
@@ -880,13 +1010,13 @@ function renderPacking(){
     }).join('');
     return `<div class="checklist-group"><h3>${g.category}</h3>${items}</div>`;
   }).join('');
-  el('pack-label').textContent=`0 of ${total} packed`;
+  el('pack-label').textContent=t('packed')(0,total);
 }
 function toggleCheck(gi,ii){
   const ci=document.getElementById(`ci-${gi}-${ii}`), chk=ci.querySelector('input');
   ci.classList.toggle('checked',chk.checked);
   const tot=document.querySelectorAll('[id^="ci-"]').length, chked=document.querySelectorAll('[id^="ci-"] input:checked').length;
-  el('pack-label').textContent=`${chked} of ${tot} packed`;
+  el('pack-label').textContent=t('packed')(chked,tot);
   el('pack-bar').style.width=(chked/tot*100)+'%';
 }
 
@@ -894,10 +1024,10 @@ function renderBudget(){
   const cur=trip.budget.currency, tot=trip.budget.items.reduce((s,i)=>s+i.budgeted,0), paid=trip.budget.items.reduce((s,i)=>s+i.paid,0);
   el('budget-content').innerHTML=`
     <div class="budget-total-card">
-      <div><div style="font-size:.82rem;opacity:.75">Total budget</div><div class="big-num">${cur} ${tot.toLocaleString()}</div></div>
-      <div style="text-align:right"><div style="font-size:.82rem;opacity:.75">Confirmed paid</div><div style="font-size:1.5rem;font-weight:800;color:#86efac">${cur} ${paid.toLocaleString()}</div></div>
+      <div><div style="font-size:.82rem;opacity:.75">${t('totalBudget')}</div><div class="big-num">${cur} ${tot.toLocaleString()}</div></div>
+      <div style="text-align:right"><div style="font-size:.82rem;opacity:.75">${t('confirmedPaid')}</div><div style="font-size:1.5rem;font-weight:800;color:#86efac">${cur} ${paid.toLocaleString()}</div></div>
     </div>
-    <div class="card"><h2>💰 Budget breakdown</h2>${trip.budget.items.map(i=>{
+    <div class="card"><h2>💰 ${t('budgetBreakdown').replace('💰 ','')}</h2>${trip.budget.items.map(i=>{
       const pct=Math.round((i.paid/i.budgeted)*100)||0;
       return `<div class="budget-row">
         <div class="budget-cat">${i.category}</div>
@@ -941,10 +1071,17 @@ function initMap(){
     const pIcon=L.divIcon({html:p.emoji||'📍',className:'',iconSize:[24,24]});
     L.marker([p.lat,p.lng],{icon:pIcon}).addTo(mapInstance).bindPopup(`<strong>${p.name}</strong><br>${p.teaser||''}<br><a href="${p.mapUrl}" target="_blank">Open in Maps</a>`);
   });
-  el('map-title').textContent=trip.destination.name+' — Trip Map';
+  el('map-title').textContent=t('tripMap')(trip.destination.name);
 }
 
 function init(){
+  LNG = (trip.traveler && trip.traveler.language) || 'en';
+  // Update static HTML labels
+  if(el('lbl-packing'))   el('lbl-packing').textContent   = t('packingList');
+  if(el('lbl-tips'))      el('lbl-tips').textContent      = t('generalTips');
+  if(el('lbl-emergency')) el('lbl-emergency').textContent = t('emergencyContacts');
+  if(el('lbl-country'))   el('lbl-country').textContent   = t('countryInfo');
+  if(el('lbl-bookrefs'))  el('lbl-bookrefs').textContent  = t('bookingRefs');
   renderHeader(); renderOverview(); renderFlights(); renderHotel();
   renderItinerary(); renderPlaces(); renderCar(); renderPacking();
   renderBudget(); renderTips(); renderInfo(); updateCountdown();
@@ -954,4 +1091,4 @@ document.addEventListener('DOMContentLoaded',init);
 </script>
 
 </body>
-</html>
+</html>                                                                                                                    
