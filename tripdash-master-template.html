@@ -59,8 +59,34 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
-@media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}.grid-2{grid-template-columns:1fr;}header h1{font-size:1.5rem;}}
+@media(max-width:700px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;}.grid-2{grid-template-columns:1fr;}header h1{font-size:1.5rem;}header p{font-size:0.82rem;}.badge{font-size:0.75rem;padding:4px 10px;}}
 @media(max-width:480px){.grid-3,.grid-4{grid-template-columns:1fr;}}
+@media(max-width:480px){
+  .flight-city .code{font-size:1.3rem;}
+  .flight-city .time{font-size:0.95rem;}
+  .flight-city .name{font-size:0.65rem;}
+  .flight-route{gap:8px;}
+  .flight-meta{gap:6px;flex-direction:column;}
+  .budget-total-card{flex-direction:column;gap:4px;}
+  .budget-total-card .big-num{font-size:1.7rem;}
+  .modal-img{height:150px;}
+  nav button{padding:12px 12px;font-size:0.78rem;}
+  .hotel-dates{gap:8px;}
+  .hotel-date-item{flex:1 0 22%;min-width:70px;}
+  .card{padding:14px;}
+  main{padding:12px 10px 50px;}
+  header{padding:22px 14px 18px;}
+  .car-option-card{padding:12px;}
+  .budget-row{flex-direction:column;align-items:flex-start;gap:3px;}
+  .budget-amounts{text-align:left;}
+  .budget-cat{min-width:0;}
+  .info-table td:first-child{width:38%;}
+}
+@media(max-width:360px){
+  .flight-city .code{font-size:1.1rem;}
+  nav button{padding:10px 9px;font-size:0.74rem;}
+  header h1{font-size:1.15rem;}
+}
 .stat-box{background:linear-gradient(135deg,#EEF3FC,#fff);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
 .stat-box .num{font-size:1.9rem;font-weight:800;color:var(--stat-num);}
 .stat-box .lbl{font-size:0.78rem;color:#666;margin-top:4px;}
@@ -134,7 +160,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 .modal-backdrop.open{display:flex;}
 .modal-box{background:#fff;border-radius:18px;max-width:580px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:modalIn .22s ease;}
 @keyframes modalIn{from{transform:scale(0.93);opacity:0;}to{transform:scale(1);opacity:1;}}
-.modal-img{width:100%;height:210px;object-fit:cover;border-radius:18px 18px 0 0;}
+.modal-img{width:100%;height:210px;object-fit:cover;border-radius:18px 18px 0 0;}@media(max-width:480px){.modal-box{border-radius:12px;}.modal-body{padding:14px;}.modal-img{height:160px;}}
 .modal-body{padding:22px;}
 .modal-body h2{font-size:1.3rem;font-weight:800;margin-bottom:7px;}
 .modal-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
@@ -207,7 +233,7 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 .occasion-tip{background:linear-gradient(135deg,#fff8e1,#fff);border:1px solid #fcd34d;border-radius:12px;padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
 .occasion-tip .tip-icon{font-size:1.4rem;flex-shrink:0;line-height:1;}
 .occasion-tip .tip-text{font-size:0.85rem;color:#333;line-height:1.5;}
-#trip-map{height:480px;border-radius:14px;border:1px solid var(--border);}
+#trip-map{height:480px;border-radius:14px;border:1px solid var(--border);}@media(max-width:700px){#trip-map{height:320px;}}@media(max-width:480px){#trip-map{height:260px;}}
 footer{background:var(--dark);color:rgba(255,255,255,0.55);text-align:center;padding:18px;font-size:0.78rem;}
 footer strong{color:#ffd700;}
 footer a{color:#ffd700;}
@@ -227,17 +253,17 @@ footer a{color:#ffd700;}
 <div class="countdown-bar" id="countdown">&#9203; Loading...</div>
 
 <nav id="main-nav">
-  <button class="active" onclick="showSection('overview',this)">&#128203; Overview</button>
-  <button onclick="showSection('flights',this)">&#9992;&#65039; Flights</button>
-  <button onclick="showSection('hotel',this)">&#127968; Hotel</button>
-  <button onclick="showSection('itinerary',this)">&#128197; Itinerary</button>
-  <button onclick="showSection('places',this)" id="places-tab-btn">&#128205; Places</button>
-  <button onclick="showSection('car',this)" id="car-tab-btn" style="display:none">&#128663; Car rental</button>
-  <button onclick="showSection('packing',this)">&#9989; Packing</button>
-  <button onclick="showSection('budget',this)">&#128176; Budget</button>
-  <button onclick="showSection('tips',this)">&#128161; Tips</button>
-  <button onclick="showSection('info',this)">&#8505;&#65039; Info</button>
-  <button onclick="showSection('map',this)">&#128506;&#65039; Map</button>
+  <button class="active" onclick="showSection('overview',this)">&#128203; <span data-nav-key="navOverview">Overview</span></button>
+  <button onclick="showSection('flights',this)">&#9992;&#65039; <span data-nav-key="navFlights">Flights</span></button>
+  <button onclick="showSection('hotel',this)">&#127968; <span data-nav-key="navHotel">Hotel</span></button>
+  <button onclick="showSection('itinerary',this)">&#128197; <span data-nav-key="navItinerary">Itinerary</span></button>
+  <button onclick="showSection('places',this)" id="places-tab-btn">&#128205; <span data-nav-key="navPlaces">Places</span></button>
+  <button onclick="showSection('car',this)" id="car-tab-btn" style="display:none">&#128663; <span data-nav-key="navCar">Car rental</span></button>
+  <button onclick="showSection('packing',this)">&#9989; <span data-nav-key="navPacking">Packing</span></button>
+  <button onclick="showSection('budget',this)">&#128176; <span data-nav-key="navBudget">Budget</span></button>
+  <button onclick="showSection('tips',this)">&#128161; <span data-nav-key="navTips">Tips</span></button>
+  <button onclick="showSection('info',this)">&#8505;&#65039; <span data-nav-key="navInfo">Info</span></button>
+  <button onclick="showSection('map',this)">&#128506;&#65039; <span data-nav-key="navMap">Map</span></button>
 </nav>
 
 <main>
@@ -270,10 +296,10 @@ footer a{color:#ffd700;}
 <section id="hotel" class="section">
   <div id="hotel-main-card" class="hotel-card"></div>
   <div class="grid-2">
-    <div class="card"><h2>&#128176; Price breakdown</h2><div id="hotel-price-breakdown"></div></div>
-    <div class="card"><h2>&#128203; Quick info</h2><div id="hotel-quick-info"></div></div>
+    <div class="card"><h2 id="lbl-price-breakdown">&#128176; Price breakdown</h2><div id="hotel-price-breakdown"></div></div>
+    <div class="card"><h2 id="lbl-quick-info">&#128203; Quick info</h2><div id="hotel-quick-info"></div></div>
   </div>
-  <div class="card"><h2>&#128205; Location &amp; contact</h2><div id="hotel-location-info"></div></div>
+  <div class="card"><h2 id="lbl-location-contact">&#128205; Location &amp; contact</h2><div id="hotel-location-info"></div></div>
 </section>
 
 <section id="itinerary" class="section">
@@ -331,7 +357,7 @@ footer a{color:#ffd700;}
   <div class="card" style="padding:14px">
     <h2>&#128506;&#65039; <span id="map-title">Trip Map</span></h2>
     <div id="trip-map"></div>
-    <p style="font-size:0.8rem;color:#888;margin-top:10px">&#128309; Hotel &nbsp;|&nbsp; &#128205; Places &nbsp;|&nbsp; Click markers for details</p>
+    <p id="map-legend" style="font-size:0.8rem;color:#888;margin-top:10px">&#128309; Hotel &nbsp;|&nbsp; &#128205; Places &nbsp;|&nbsp; Click markers for details</p>
   </div>
 </section>
 
@@ -655,7 +681,31 @@ const I18N = {
     sightseeing:'🏛️ Sightseeing',
     noCarNeeded:'No car rental needed for this trip.',
     tripMap:(dest)=>`${dest} — Trip Map`,
-    fullItinerary:(n,dest)=>`${n} nights — ${dest}`
+    fullItinerary:(n,dest)=>`${n} nights — ${dest}`,
+    navOverview:'Overview',navFlights:'Flights',navHotel:'Hotel',navItinerary:'Itinerary',
+    navPlaces:'Places',navCar:'Car rental',navPacking:'Packing',navBudget:'Budget',
+    navTips:'Tips',navInfo:'Info',navMap:'Map',
+    daysUntil:(n,d)=>`⏳ ${n} days until departure — ${d}`,
+    todayDepart:'🛫 Today is departure day! Have an amazing trip!',
+    onHoliday:(dest)=>`🌴 You are on holiday! Enjoy every moment in ${dest}!`,
+    outbound:'Outbound',return_:'Return',flightLbl:'Flight',routeLbl:'Route',
+    durationLbl:'Duration',bookingRefLbl:'Booking ref',statusLbl:'Status',
+    confirmedStatus:'✓ CONFIRMED',confirmedAlert:'Confirmed',
+    specialOccasion:'Special occasion',carRentalPrebook:'Car rental — pre-book!',
+    checkInLbl:'Check-in',checkOutLbl:'Check-out',roomLbl:'Room',nightsLbl:'Nights',
+    guestsLbl:'Guests',boardLbl:'Board',allAges:'All ages',
+    fromLbl:(t)=>`From ${t}`,byLbl:(t)=>`By ${t}`,addressLbl:'Address',phoneLbl:'Phone',
+    viewMapsBtn:'🗺️ View on Google Maps',priceBreakdownLbl:'💰 Price breakdown',
+    quickInfoLbl:'📋 Quick info',locationLbl:'📍 Location & contact',
+    totalLbl:'Total',paidLbl:'✅ Paid',vehicleOptionsLbl:'🚗 Vehicle options',
+    recommendedLbl:'⭐ RECOMMENDED',bookOnlineLbl:'🔗 Book online',
+    carRentalLbl:'Car rental:',yrsLbl:'yrs',ofLbl:'of',
+    pinLbl:'PIN code',cancellationLbl:'Cancellation',
+    onlineCheckinLbl:'Online check-in:',checkinOpensTxt:'Check-in opens 24h before departure.',
+    hotelLbl:'Hotel',flightsLbl:'Flights',hotelPinLbl:'Hotel PIN',openInMapsLbl:'Open in Maps',
+    bookedPaid:(flightRef,hotel)=>`Flights (ref: ${flightRef}) and ${hotel} are booked and paid.`,
+    carRentalDayTrips:'Car rental for day trips.',seeTipsMsg:'See the Tips tab for planning ideas!',
+    clickHint:'Click',mapLegend:'🔴 Hotel &nbsp;|&nbsp; 📍 Places &nbsp;|&nbsp; Click markers for details'
   },
   ru: {
     packingList:'Список вещей', packed:(n,t)=>`${n} из ${t} собрано`,
@@ -675,7 +725,31 @@ const I18N = {
     sightseeing:'🏛️ Достопримечательности',
     noCarNeeded:'Аренда авто не нужна для этой поездки.',
     tripMap:(dest)=>`${dest} — Карта маршрута`,
-    fullItinerary:(n,dest)=>`${n} ночей — ${dest}`
+    fullItinerary:(n,dest)=>`${n} ночей — ${dest}`,
+    navOverview:'Обзор',navFlights:'Рейсы',navHotel:'Отель',navItinerary:'Маршрут',
+    navPlaces:'Места',navCar:'Аренда авто',navPacking:'Упаковка',navBudget:'Бюджет',
+    navTips:'Советы',navInfo:'Инфо',navMap:'Карта',
+    daysUntil:(n,d)=>`⏳ ${n} дней до отлёта — ${d}`,
+    todayDepart:'🛫 Сегодня день вылета! Счастливого пути!',
+    onHoliday:(dest)=>`🌴 Вы в отпуске! Наслаждайтесь каждым моментом в ${dest}!`,
+    outbound:'Вылет',return_:'Обратно',flightLbl:'Рейс',routeLbl:'Маршрут',
+    durationLbl:'Длительность',bookingRefLbl:'№ брони',statusLbl:'Статус',
+    confirmedStatus:'✓ ПОДТВЕРЖДЕНО',confirmedAlert:'Подтверждено',
+    specialOccasion:'Особый случай',carRentalPrebook:'Аренда авто — бронируйте заранее!',
+    checkInLbl:'Заезд',checkOutLbl:'Выезд',roomLbl:'Номер',nightsLbl:'Ночей',
+    guestsLbl:'Гостей',boardLbl:'Питание',allAges:'Все возрасты',
+    fromLbl:(t)=>`С ${t}`,byLbl:(t)=>`До ${t}`,addressLbl:'Адрес',phoneLbl:'Телефон',
+    viewMapsBtn:'🗺️ Открыть в картах',priceBreakdownLbl:'💰 Разбивка цены',
+    quickInfoLbl:'📋 Краткая инфо',locationLbl:'📍 Адрес и контакт',
+    totalLbl:'Итого',paidLbl:'✅ Оплачено',vehicleOptionsLbl:'🚗 Варианты авто',
+    recommendedLbl:'⭐ РЕКОМЕНДУЕТСЯ',bookOnlineLbl:'🔗 Забронировать',
+    carRentalLbl:'Аренда авто:',yrsLbl:'лет',ofLbl:'из',
+    pinLbl:'PIN-код',cancellationLbl:'Отмена',
+    onlineCheckinLbl:'Онлайн регистрация:',checkinOpensTxt:'Регистрация открывается за 24 часа до вылета.',
+    hotelLbl:'Отель',flightsLbl:'Рейсы',hotelPinLbl:'PIN отеля',openInMapsLbl:'Открыть в картах',
+    bookedPaid:(flightRef,hotel)=>`Рейсы (брон.: ${flightRef}) и ${hotel} подтверждены и оплачены.`,
+    carRentalDayTrips:'Аренда авто для поездок.',seeTipsMsg:'Смотрите вкладку Советы для идей!',
+    clickHint:'Нажмите',mapLegend:'🔴 Отель &nbsp;|&nbsp; 📍 Места &nbsp;|&nbsp; Нажмите на маркер'
   },
   no: {
     packingList:'Pakkeliste', packed:(n,t)=>`${n} av ${t} pakket`,
@@ -695,7 +769,31 @@ const I18N = {
     sightseeing:'🏛️ Severdigheter',
     noCarNeeded:'Leiebil ikke nødvendig for denne turen.',
     tripMap:(dest)=>`${dest} — Reisekart`,
-    fullItinerary:(n,dest)=>`${n} netter — ${dest}`
+    fullItinerary:(n,dest)=>`${n} netter — ${dest}`,
+    navOverview:'Oversikt',navFlights:'Fly',navHotel:'Hotell',navItinerary:'Reiseplan',
+    navPlaces:'Steder',navCar:'Leiebil',navPacking:'Pakking',navBudget:'Budsjett',
+    navTips:'Tips',navInfo:'Info',navMap:'Kart',
+    daysUntil:(n,d)=>`⏳ ${n} dager til avreise — ${d}`,
+    todayDepart:'🛫 I dag er avreisedagen! God tur!',
+    onHoliday:(dest)=>`🌴 Du er på ferie! Nyt hvert øyeblikk i ${dest}!`,
+    outbound:'Utreise',return_:'Hjemreise',flightLbl:'Fly',routeLbl:'Rute',
+    durationLbl:'Varighet',bookingRefLbl:'Bestillingsref.',statusLbl:'Status',
+    confirmedStatus:'✓ BEKREFTET',confirmedAlert:'Bekreftet',
+    specialOccasion:'Spesiell anledning',carRentalPrebook:'Leiebil — forhåndsbestill!',
+    checkInLbl:'Innsjekking',checkOutLbl:'Utsjekking',roomLbl:'Rom',nightsLbl:'Netter',
+    guestsLbl:'Gjester',boardLbl:'Kost',allAges:'Alle aldre',
+    fromLbl:(t)=>`Fra kl. ${t}`,byLbl:(t)=>`Innen kl. ${t}`,addressLbl:'Adresse',phoneLbl:'Telefon',
+    viewMapsBtn:'🗺️ Vis på Google Maps',priceBreakdownLbl:'💰 Prisfordeling',
+    quickInfoLbl:'📋 Hurtiginfo',locationLbl:'📍 Plassering og kontakt',
+    totalLbl:'Totalt',paidLbl:'✅ Betalt',vehicleOptionsLbl:'🚗 Kjøretøyalternativer',
+    recommendedLbl:'⭐ ANBEFALT',bookOnlineLbl:'🔗 Bestill online',
+    carRentalLbl:'Leiebil:',yrsLbl:'år',ofLbl:'av',
+    pinLbl:'PIN-kode',cancellationLbl:'Avbestilling',
+    onlineCheckinLbl:'Online innsjekk:',checkinOpensTxt:'Innsjekking åpner 24t før avreise.',
+    hotelLbl:'Hotell',flightsLbl:'Fly',hotelPinLbl:'Hotell PIN',openInMapsLbl:'Åpne i kart',
+    bookedPaid:(flightRef,hotel)=>`Fly (ref: ${flightRef}) og ${hotel} er bestilt og betalt.`,
+    carRentalDayTrips:'Leiebil for dagturer.',seeTipsMsg:'Se Tips-fanen for planleggingsideer!',
+    clickHint:'Klikk',mapLegend:'🔴 Hotell &nbsp;|&nbsp; 📍 Steder &nbsp;|&nbsp; Klikk på markør'
   },
   de: {
     packingList:'Packliste', packed:(n,t)=>`${n} von ${t} eingepackt`,
@@ -715,7 +813,31 @@ const I18N = {
     sightseeing:'🏛️ Sehenswürdigkeiten',
     noCarNeeded:'Kein Mietwagen erforderlich.',
     tripMap:(dest)=>`${dest} — Reisekarte`,
-    fullItinerary:(n,dest)=>`${n} Nächte — ${dest}`
+    fullItinerary:(n,dest)=>`${n} Nächte — ${dest}`,
+    navOverview:'Übersicht',navFlights:'Flüge',navHotel:'Hotel',navItinerary:'Reiseplan',
+    navPlaces:'Orte',navCar:'Mietwagen',navPacking:'Packliste',navBudget:'Budget',
+    navTips:'Tipps',navInfo:'Info',navMap:'Karte',
+    daysUntil:(n,d)=>`⏳ ${n} Tage bis zur Abreise — ${d}`,
+    todayDepart:'🛫 Heute ist der Abreisetag! Gute Reise!',
+    onHoliday:(dest)=>`🌴 Ihr seid im Urlaub! Genießt jeden Moment in ${dest}!`,
+    outbound:'Hinflug',return_:'Rückflug',flightLbl:'Flug',routeLbl:'Strecke',
+    durationLbl:'Dauer',bookingRefLbl:'Buchungsref.',statusLbl:'Status',
+    confirmedStatus:'✓ BESTÄTIGT',confirmedAlert:'Bestätigt',
+    specialOccasion:'Besonderer Anlass',carRentalPrebook:'Mietwagen — vorbuchen!',
+    checkInLbl:'Check-in',checkOutLbl:'Check-out',roomLbl:'Zimmer',nightsLbl:'Nächte',
+    guestsLbl:'Gäste',boardLbl:'Verpflegung',allAges:'Alle Altersgruppen',
+    fromLbl:(t)=>`Ab ${t}`,byLbl:(t)=>`Bis ${t}`,addressLbl:'Adresse',phoneLbl:'Telefon',
+    viewMapsBtn:'🗺️ Auf Google Maps',priceBreakdownLbl:'💰 Preisaufschlüsselung',
+    quickInfoLbl:'📋 Kurzinfos',locationLbl:'📍 Lage & Kontakt',
+    totalLbl:'Gesamt',paidLbl:'✅ Bezahlt',vehicleOptionsLbl:'🚗 Fahrzeugoptionen',
+    recommendedLbl:'⭐ EMPFOHLEN',bookOnlineLbl:'🔗 Online buchen',
+    carRentalLbl:'Mietwagen:',yrsLbl:'J.',ofLbl:'von',
+    pinLbl:'PIN-Code',cancellationLbl:'Stornierung',
+    onlineCheckinLbl:'Online-Check-in:',checkinOpensTxt:'Check-in öffnet 24 Std. vor Abflug.',
+    hotelLbl:'Hotel',flightsLbl:'Flüge',hotelPinLbl:'Hotel PIN',openInMapsLbl:'In Karte öffnen',
+    bookedPaid:(flightRef,hotel)=>`Flüge (Ref: ${flightRef}) und ${hotel} sind gebucht und bezahlt.`,
+    carRentalDayTrips:'Mietwagen für Tagesausflüge.',seeTipsMsg:'Tipps-Tab für Planungsideen!',
+    clickHint:'Klicken',mapLegend:'🔴 Hotel &nbsp;|&nbsp; 📍 Orte &nbsp;|&nbsp; Marker anklicken'
   },
   es: {
     packingList:'Lista de equipaje', packed:(n,t)=>`${n} de ${t} empacado`,
@@ -735,7 +857,31 @@ const I18N = {
     sightseeing:'🏛️ Turismo',
     noCarNeeded:'No se necesita alquiler de coche.',
     tripMap:(dest)=>`${dest} — Mapa del viaje`,
-    fullItinerary:(n,dest)=>`${n} noches — ${dest}`
+    fullItinerary:(n,dest)=>`${n} noches — ${dest}`,
+    navOverview:'Resumen',navFlights:'Vuelos',navHotel:'Hotel',navItinerary:'Itinerario',
+    navPlaces:'Lugares',navCar:'Alquiler',navPacking:'Equipaje',navBudget:'Presupuesto',
+    navTips:'Consejos',navInfo:'Info',navMap:'Mapa',
+    daysUntil:(n,d)=>`⏳ ${n} días para la salida — ${d}`,
+    todayDepart:'🛫 ¡Hoy es el día de salida! ¡Buen viaje!',
+    onHoliday:(dest)=>`🌴 ¡Estás de vacaciones! ¡Disfruta cada momento en ${dest}!`,
+    outbound:'Ida',return_:'Vuelta',flightLbl:'Vuelo',routeLbl:'Ruta',
+    durationLbl:'Duración',bookingRefLbl:'Ref. reserva',statusLbl:'Estado',
+    confirmedStatus:'✓ CONFIRMADO',confirmedAlert:'Confirmado',
+    specialOccasion:'Ocasión especial',carRentalPrebook:'Coche — ¡reserva antes!',
+    checkInLbl:'Entrada',checkOutLbl:'Salida',roomLbl:'Habitación',nightsLbl:'Noches',
+    guestsLbl:'Huéspedes',boardLbl:'Régimen',allAges:'Todas las edades',
+    fromLbl:(t)=>`Desde ${t}`,byLbl:(t)=>`Antes de ${t}`,addressLbl:'Dirección',phoneLbl:'Teléfono',
+    viewMapsBtn:'🗺️ Ver en Google Maps',priceBreakdownLbl:'💰 Desglose de precios',
+    quickInfoLbl:'📋 Info rápida',locationLbl:'📍 Ubicación y contacto',
+    totalLbl:'Total',paidLbl:'✅ Pagado',vehicleOptionsLbl:'🚗 Opciones de vehículo',
+    recommendedLbl:'⭐ RECOMENDADO',bookOnlineLbl:'🔗 Reservar online',
+    carRentalLbl:'Coche de alquiler:',yrsLbl:'años',ofLbl:'de',
+    pinLbl:'Código PIN',cancellationLbl:'Cancelación',
+    onlineCheckinLbl:'Facturación online:',checkinOpensTxt:'Facturación abre 24h antes de la salida.',
+    hotelLbl:'Hotel',flightsLbl:'Vuelos',hotelPinLbl:'PIN del hotel',openInMapsLbl:'Abrir en mapa',
+    bookedPaid:(flightRef,hotel)=>`Vuelos (ref: ${flightRef}) y ${hotel} están reservados y pagados.`,
+    carRentalDayTrips:'Coche de alquiler para excursiones.',seeTipsMsg:'¡Mira la pestaña Consejos!',
+    clickHint:'Click',mapLegend:'🔴 Hotel &nbsp;|&nbsp; 📍 Lugares &nbsp;|&nbsp; Clic en marcadores'
   },
   fr: {
     packingList:'Liste de bagages', packed:(n,t)=>`${n} sur ${t} emballé`,
@@ -755,7 +901,31 @@ const I18N = {
     sightseeing:'🏛️ Tourisme',
     noCarNeeded:'Pas besoin de location de voiture.',
     tripMap:(dest)=>`${dest} — Carte du voyage`,
-    fullItinerary:(n,dest)=>`${n} nuits — ${dest}`
+    fullItinerary:(n,dest)=>`${n} nuits — ${dest}`,
+    navOverview:'Aperçu',navFlights:'Vols',navHotel:'Hôtel',navItinerary:'Itinéraire',
+    navPlaces:'Lieux',navCar:'Location',navPacking:'Bagages',navBudget:'Budget',
+    navTips:'Conseils',navInfo:'Info',navMap:'Carte',
+    daysUntil:(n,d)=>`⏳ ${n} jours avant le départ — ${d}`,
+    todayDepart:'🛫 Aujourd\'hui c\'est le grand départ ! Bon voyage !',
+    onHoliday:(dest)=>`🌴 Vous êtes en vacances ! Profitez de chaque instant à ${dest} !`,
+    outbound:'Aller',return_:'Retour',flightLbl:'Vol',routeLbl:'Itinéraire',
+    durationLbl:'Durée',bookingRefLbl:'Réf. réservation',statusLbl:'Statut',
+    confirmedStatus:'✓ CONFIRMÉ',confirmedAlert:'Confirmé',
+    specialOccasion:'Occasion spéciale',carRentalPrebook:'Location — réservez à l\'avance !',
+    checkInLbl:'Arrivée',checkOutLbl:'Départ',roomLbl:'Chambre',nightsLbl:'Nuits',
+    guestsLbl:'Hôtes',boardLbl:'Formule',allAges:'Tous âges',
+    fromLbl:(t)=>`Dès ${t}`,byLbl:(t)=>`Avant ${t}`,addressLbl:'Adresse',phoneLbl:'Téléphone',
+    viewMapsBtn:'🗺️ Voir sur Google Maps',priceBreakdownLbl:'💰 Détail des prix',
+    quickInfoLbl:'📋 Infos rapides',locationLbl:'📍 Localisation et contact',
+    totalLbl:'Total',paidLbl:'✅ Payé',vehicleOptionsLbl:'🚗 Options de véhicule',
+    recommendedLbl:'⭐ RECOMMANDÉ',bookOnlineLbl:'🔗 Réserver',
+    carRentalLbl:'Location de voiture :',yrsLbl:'ans',ofLbl:'sur',
+    pinLbl:'Code PIN',cancellationLbl:'Annulation',
+    onlineCheckinLbl:'Enregistrement en ligne :',checkinOpensTxt:"L'enregistrement ouvre 24h avant le départ.",
+    hotelLbl:'Hôtel',flightsLbl:'Vols',hotelPinLbl:'PIN hôtel',openInMapsLbl:'Ouvrir dans la carte',
+    bookedPaid:(flightRef,hotel)=>`Vols (réf : ${flightRef}) et ${hotel} sont réservés et payés.`,
+    carRentalDayTrips:'Location pour les excursions.',seeTipsMsg:'Consultez l\'onglet Conseils !',
+    clickHint:'Cliquez',mapLegend:'🔴 Hôtel &nbsp;|&nbsp; 📍 Lieux &nbsp;|&nbsp; Cliquez sur les marqueurs'
   }
 };
 let LNG = 'en';
@@ -803,9 +973,9 @@ function updateCountdown(){
   const dep = new Date(trip.dates.departure), now = new Date();
   const diff = Math.ceil((dep-now)/86400000);
   const b = el('countdown');
-  if(diff>0) b.innerHTML = `⏳ <span>${diff} days</span> until departure — ${trip.dates.departure}`;
-  else if(diff===0) b.innerHTML = `🛫 <span>Today is departure day!</span> Have an amazing trip!`;
-  else b.innerHTML = `🌴 <span>You are on holiday!</span> Enjoy every moment in ${trip.destination.name}!`;
+  if(diff>0) b.innerHTML = `<span>${t('daysUntil')(diff,trip.dates.departure)}</span>`;
+  else if(diff===0) b.innerHTML = `<span>${t('todayDepart')}</span>`;
+  else b.innerHTML = `<span>${t('onHoliday')(trip.destination.name)}</span>`;
 }
 
 function renderHeader(){
@@ -818,8 +988,8 @@ function renderHeader(){
     <span class="badge live">✈️ ${trip.flights.outbound.airline} · Ref: ${trip.flights.outbound.bookingRef} ✓</span>
     <span class="badge live">📅 ${trip.dates.departure} – ${trip.dates.returnDate}</span>
     <span class="badge live">🏨 ${trip.hotel.name} ✓</span>
-    ${trip.car.needed?`<span class="badge pending">🚗 Car rental — pre-book!</span>`:''}
-    <span class="badge">👨‍👩‍👧 ${trip.travelers.length} travellers</span>
+    ${trip.car.needed?`<span class="badge pending">🚗 ${t('carRentalPrebook')}</span>`:''}
+    <span class="badge">👨‍👩‍👧 ${trip.travelers.length} ${t('travellers')}</span>
     ${occ?`<span class="badge" style="background:rgba(240,165,0,0.7)">${occ.icon} ${trip.occasion.description}</span>`:''}
   `;
   const langs=[{code:'en',flag:'🇬🇧',label:'EN'},{code:'no',flag:'🇳🇴',label:'NO'},{code:'ru',flag:'🇷🇺',label:'RU'},{code:'de',flag:'🇩🇪',label:'DE'},{code:'es',flag:'🇪🇸',label:'ES'},{code:'fr',flag:'🇫🇷',label:'FR'}];
@@ -836,36 +1006,36 @@ function renderOverview(){
     <div class="stat-box"><div class="num" style="color:var(--secondary)">${trip.budget.currency} ${paid.toLocaleString()}</div><div class="lbl">${t('confirmedPaid')}</div><div class="sub">of ${trip.budget.currency} ${tot.toLocaleString()} budget</div></div>`;
   const occ=trip.occasion.type&&occasionData[trip.occasion.type];
   el('overview-alerts').innerHTML=`
-    <div class="alert success"><span class="icon">✅</span><div><strong>Confirmed:</strong> Flights (ref: ${trip.flights.outbound.bookingRef}) and ${trip.hotel.name} are booked and paid.</div></div>
-    ${trip.car.needed?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>Still to arrange:</strong> Car rental for day trips. ${trip.car.bookingTip||''}</div></div>`:''}
-    ${occ?`<div class="alert occasion"><span class="icon">${occ.icon}</span><div><strong>Special occasion:</strong> ${trip.occasion.description} — See the Tips tab for planning ideas!</div></div>`:''}`;
+    <div class="alert success"><span class="icon">✅</span><div><strong>${t('confirmedAlert')}:</strong> ${t('bookedPaid')(trip.flights.outbound.bookingRef,trip.hotel.name)}</div></div>
+    ${trip.car.needed?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> ${t('carRentalDayTrips')} ${trip.car.bookingTip||''}</div></div>`:''}
+    ${occ?`<div class="alert occasion"><span class="icon">${occ.icon}</span><div><strong>${t('specialOccasion')}:</strong> ${trip.occasion.description} — ${t('seeTipsMsg')}</div></div>`:''}`;
   const f=trip.flights;
-  el('overview-flight-out').innerHTML=`<h2>✈️ Outbound — ${f.outbound.date}</h2>
+  el('overview-flight-out').innerHTML=`<h2>✈️ ${t('outbound')} — ${f.outbound.date}</h2>
     <table class="info-table">
-      <tr><td>Flight</td><td>${f.outbound.airline} · <strong>${f.outbound.flightNumber}</strong></td></tr>
-      <tr><td>Route</td><td>${f.outbound.fromCode} ${f.outbound.departs} → ${f.outbound.toCode} ${f.outbound.arrives}</td></tr>
-      <tr><td>Duration</td><td>${f.outbound.duration}</td></tr>
-      <tr><td>Booking ref</td><td><strong>${f.outbound.bookingRef}</strong></td></tr>
-      <tr><td>Status</td><td><span class="status-booked">✓ CONFIRMED</span></td></tr>
+      <tr><td>${t('flightLbl')}</td><td>${f.outbound.airline} · <strong>${f.outbound.flightNumber}</strong></td></tr>
+      <tr><td>${t('routeLbl')}</td><td>${f.outbound.fromCode} ${f.outbound.departs} → ${f.outbound.toCode} ${f.outbound.arrives}</td></tr>
+      <tr><td>${t('durationLbl')}</td><td>${f.outbound.duration}</td></tr>
+      <tr><td>${t('bookingRefLbl')}</td><td><strong>${f.outbound.bookingRef}</strong></td></tr>
+      <tr><td>${t('statusLbl')}</td><td><span class="status-booked">${t('confirmedStatus')}</span></td></tr>
     </table>`;
-  el('overview-flight-ret').innerHTML=`<h2>✈️ Return — ${f.return.date}</h2>
+  el('overview-flight-ret').innerHTML=`<h2>✈️ ${t('return_')} — ${f.return.date}</h2>
     <table class="info-table">
-      <tr><td>Flight</td><td>${f.return.airline} · <strong>${f.return.flightNumber}</strong></td></tr>
-      <tr><td>Route</td><td>${f.return.fromCode} ${f.return.departs} → ${f.return.toCode} ${f.return.arrives}</td></tr>
-      <tr><td>Duration</td><td>${f.return.duration}</td></tr>
-      <tr><td>Booking ref</td><td><strong>${f.return.bookingRef}</strong></td></tr>
-      <tr><td>Status</td><td><span class="status-booked">✓ CONFIRMED</span></td></tr>
+      <tr><td>${t('flightLbl')}</td><td>${f.return.airline} · <strong>${f.return.flightNumber}</strong></td></tr>
+      <tr><td>${t('routeLbl')}</td><td>${f.return.fromCode} ${f.return.departs} → ${f.return.toCode} ${f.return.arrives}</td></tr>
+      <tr><td>${t('durationLbl')}</td><td>${f.return.duration}</td></tr>
+      <tr><td>${t('bookingRefLbl')}</td><td><strong>${f.return.bookingRef}</strong></td></tr>
+      <tr><td>${t('statusLbl')}</td><td><span class="status-booked">${t('confirmedStatus')}</span></td></tr>
     </table>`;
   const h=trip.hotel;
-  el('overview-hotel').innerHTML=`<div class="card"><h2>🏨 Hotel</h2>
+  el('overview-hotel').innerHTML=`<div class="card"><h2>🏨 ${t('hotelLbl')}</h2>
     <div class="hotel-card">
       <h3>${stars(h.stars)} ${h.name}</h3>
       <p style="opacity:.8;font-size:.83rem;margin-top:4px">📍 ${h.address}${h.phone?' · Tel: '+h.phone:''}</p>
       <div class="hotel-dates">
-        <div class="hotel-date-item"><div class="label">Check-in</div><div class="value">${h.checkIn}</div><div class="time">From ${h.checkInTime}</div></div>
-        <div class="hotel-date-item"><div class="label">Check-out</div><div class="value">${h.checkOut}</div><div class="time">By ${h.checkOutTime}</div></div>
-        <div class="hotel-date-item"><div class="label">Room</div><div class="value">${h.roomType}</div><div class="time">${h.board}</div></div>
-        <div class="hotel-date-item"><div class="label">Nights</div><div class="value">${trip.dates.nights}</div><div class="time">${trip.travelers.length} guests</div></div>
+        <div class="hotel-date-item"><div class="label">${t('checkInLbl')}</div><div class="value">${h.checkIn}</div><div class="time">${t('fromLbl')(h.checkInTime)}</div></div>
+        <div class="hotel-date-item"><div class="label">${t('checkOutLbl')}</div><div class="value">${h.checkOut}</div><div class="time">${t('byLbl')(h.checkOutTime)}</div></div>
+        <div class="hotel-date-item"><div class="label">${t('roomLbl')}</div><div class="value">${h.roomType}</div><div class="time">${h.board}</div></div>
+        <div class="hotel-date-item"><div class="label">${t('nightsLbl')}</div><div class="value">${trip.dates.nights}</div><div class="time">${trip.travelers.length} ${t('guestsLbl')}</div></div>
       </div>
       <div class="hotel-info-row">
         <span>📋 Ref: <strong>${h.bookingRef}</strong></span>
@@ -875,13 +1045,13 @@ function renderOverview(){
       </div>
     </div></div>`;
   const paid2=trip.budget.items.reduce((s,i)=>s+i.paid,0);
-  el('overview-cost').innerHTML=`<h2>💰 Budget Overview</h2>`+
+  el('overview-cost').innerHTML=`<h2>💰 ${t('budgetOverview').replace('💰 ','')}</h2>`+
     trip.budget.items.map(i=>`<div class="cost-row"><span class="cost-label">${i.category}</span><span class="cost-amount">${i.paid>0?trip.budget.currency+' '+i.paid.toLocaleString()+' ✓':'<span class="status-pending">'+t('notPaidYet')+'</span>'}</span></div>`).join('')+
     `<div class="cost-row total"><span class="cost-label">${t('confirmedPaid')}</span><span class="cost-amount">${trip.budget.currency} ${paid2.toLocaleString()}</span></div>`;
 }
 
 function renderFlights(){
-  el('passenger-grid').innerHTML=trip.travelers.map(t=>`<div style="background:${t.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${t.name}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${t.role.charAt(0).toUpperCase()+t.role.slice(1)}${t.age?' · '+t.age+' yrs':''}</div></div>`).join('');
+  el('passenger-grid').innerHTML=trip.travelers.map(tv=>`<div style="background:${tv.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${tv.name}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${tv.role.charAt(0).toUpperCase()+tv.role.slice(1)}${tv.age?' · '+tv.age+' '+t('yrsLbl'):''}</div></div>`).join('');
   function fc(f){ return `<div class="airline">${f.airline||'—'} · ${f.flightNumber||'—'}</div>
     <div class="flight-route">
       <div class="flight-city"><div class="code">${f.fromCode||'—'}</div><div class="name">${f.from||'—'}</div><div class="time">${f.departs||'—'}</div></div>
@@ -899,8 +1069,8 @@ function renderFlights(){
   el('flight-out-card').innerHTML=fc(trip.flights.outbound);
   el('flight-ret-card').innerHTML=fc(trip.flights.return);
   el('flights-checkin-info').innerHTML=trip.flights.outbound.checkinUrl
-    ?`Online check-in: <a href="${trip.flights.outbound.checkinUrl}" target="_blank">${trip.flights.outbound.checkinUrl}</a> · Ref: <strong>${trip.flights.outbound.bookingRef}</strong>`
-    :`Booking ref: <strong>${trip.flights.outbound.bookingRef}</strong> · Check-in opens 24h before departure.`;
+    ?`${t('onlineCheckinLbl')} <a href="${trip.flights.outbound.checkinUrl}" target="_blank">${trip.flights.outbound.checkinUrl}</a> · ${t('bookingRefLbl')}: <strong>${trip.flights.outbound.bookingRef}</strong>`
+    :`${t('bookingRefLbl')}: <strong>${trip.flights.outbound.bookingRef}</strong> · ${t('checkinOpensTxt')}`;
 }
 
 function renderHotel(){
@@ -908,13 +1078,13 @@ function renderHotel(){
   el('hotel-main-card').innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
       <div><h3>${stars(h.stars)} ${h.name}</h3><p style="opacity:.8;margin-top:3px;font-size:.85rem">📍 ${h.address}</p></div>
-      <div style="background:rgba(255,255,255,0.15);border-radius:9px;padding:9px 14px;text-align:center"><div style="font-size:1.3rem;font-weight:800">${trip.dates.nights}</div><div style="font-size:.72rem;opacity:.8">nights</div></div>
+      <div style="background:rgba(255,255,255,0.15);border-radius:9px;padding:9px 14px;text-align:center"><div style="font-size:1.3rem;font-weight:800">${trip.dates.nights}</div><div style="font-size:.72rem;opacity:.8">${t('nightsLbl')}</div></div>
     </div>
     <div class="hotel-dates" style="margin-top:18px">
-      <div class="hotel-date-item"><div class="label">Check-in</div><div class="value">${h.checkIn}</div><div class="time">From ${h.checkInTime}</div></div>
-      <div class="hotel-date-item"><div class="label">Check-out</div><div class="value">${h.checkOut}</div><div class="time">By ${h.checkOutTime}</div></div>
-      <div class="hotel-date-item"><div class="label">Room</div><div class="value">${h.roomType}</div><div class="time">${h.board}</div></div>
-      <div class="hotel-date-item"><div class="label">Guests</div><div class="value">${trip.travelers.length}</div><div class="time">All ages</div></div>
+      <div class="hotel-date-item"><div class="label">${t('checkInLbl')}</div><div class="value">${h.checkIn}</div><div class="time">${t('fromLbl')(h.checkInTime)}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('checkOutLbl')}</div><div class="value">${h.checkOut}</div><div class="time">${t('byLbl')(h.checkOutTime)}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('roomLbl')}</div><div class="value">${h.roomType}</div><div class="time">${h.board}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('guestsLbl')}</div><div class="value">${trip.travelers.length}</div><div class="time">${t('allAges')}</div></div>
     </div>
     <div class="hotel-info-row">
       <span>📋 Ref: <strong>${h.bookingRef}</strong></span>
@@ -922,23 +1092,26 @@ function renderHotel(){
       <span>💳 <strong>${h.price}</strong></span>
       <span>📜 ${h.cancelPolicy}</span>
     </div>`;
+  if(el('lbl-price-breakdown')) el('lbl-price-breakdown').innerHTML='&#128176; '+t('priceBreakdownLbl').replace('💰 ','');
+  if(el('lbl-quick-info')) el('lbl-quick-info').innerHTML='&#128203; '+t('quickInfoLbl').replace('📋 ','');
+  if(el('lbl-location-contact')) el('lbl-location-contact').innerHTML='&#128205; '+t('locationLbl').replace('📍 ','');
   el('hotel-price-breakdown').innerHTML=`
-    <div class="cost-row"><span class="cost-label">${trip.dates.nights} nights</span><span class="cost-amount">${h.price}</span></div>
-    <div class="cost-row"><span class="cost-label">Board</span><span class="cost-amount">${h.board}</span></div>
-    <div class="cost-row total"><span class="cost-label">Total</span><span class="cost-amount">${h.price} ✅ Paid</span></div>`;
+    <div class="cost-row"><span class="cost-label">${trip.dates.nights} ${t('nightsLbl')}</span><span class="cost-amount">${h.price}</span></div>
+    <div class="cost-row"><span class="cost-label">${t('boardLbl')}</span><span class="cost-amount">${h.board}</span></div>
+    <div class="cost-row total"><span class="cost-label">${t('totalLbl')}</span><span class="cost-amount">${h.price} ${t('paidLbl')}</span></div>`;
   el('hotel-quick-info').innerHTML=`<table class="info-table">
-    <tr><td>Check-in</td><td>From ${h.checkInTime}</td></tr>
-    <tr><td>Check-out</td><td>By ${h.checkOutTime}</td></tr>
-    <tr><td>Board</td><td>${h.board}</td></tr>
-    <tr><td>Booking ref</td><td>${h.bookingRef}</td></tr>
-    ${h.pin?`<tr><td>PIN code</td><td><strong>${h.pin}</strong></td></tr>`:''}
-    <tr><td>Cancellation</td><td>${h.cancelPolicy}</td></tr>
+    <tr><td>${t('checkInLbl')}</td><td>${t('fromLbl')(h.checkInTime)}</td></tr>
+    <tr><td>${t('checkOutLbl')}</td><td>${t('byLbl')(h.checkOutTime)}</td></tr>
+    <tr><td>${t('boardLbl')}</td><td>${h.board}</td></tr>
+    <tr><td>${t('bookingRefLbl')}</td><td>${h.bookingRef}</td></tr>
+    ${h.pin?`<tr><td>${t('pinLbl')}</td><td><strong>${h.pin}</strong></td></tr>`:''}
+    <tr><td>${t('cancellationLbl')}</td><td>${h.cancelPolicy}</td></tr>
     </table>`;
   el('hotel-location-info').innerHTML=`<table class="info-table">
-    <tr><td>Address</td><td>${h.address}</td></tr>
-    ${h.phone?`<tr><td>Phone</td><td><a href="tel:${h.phone}">${h.phone}</a></td></tr>`:''}
+    <tr><td>${t('addressLbl')}</td><td>${h.address}</td></tr>
+    ${h.phone?`<tr><td>${t('phoneLbl')}</td><td><a href="tel:${h.phone}">${h.phone}</a></td></tr>`:''}
     </table>
-    <div style="margin-top:12px"><a class="btn-link maps" href="${h.mapUrl}" target="_blank">🗺️ View on Google Maps</a></div>`;
+    <div style="margin-top:12px"><a class="btn-link maps" href="${h.mapUrl}" target="_blank">${t('viewMapsBtn')}</a></div>`;
 }
 
 function renderItinerary(){
@@ -957,7 +1130,7 @@ function renderItinerary(){
 function renderPlaces(){
   const cats=['all',...new Set(trip.places.map(p=>p.category))];
   el('places-filter').innerHTML=cats.map(c=>`<button class="filter-btn ${c==='all'?'active':''}" onclick="filterPlaces('${c}',this)">${c==='all'?t('all'):catLabel(c)}</button>`).join('');
-  el('places-tab-btn').textContent=`📍 ${trip.places.length} Places`;
+  el('places-tab-btn').querySelector('[data-nav-key]').textContent=`${trip.places.length} ${t('navPlaces')}`;
   renderPlaceGrid('all');
 }
 function renderPlaceGrid(f){
@@ -965,7 +1138,7 @@ function renderPlaceGrid(f){
   el('places-grid-wrap').innerHTML=`<div class="grid-3">${ps.map(p=>`
     <div class="place-img-card" onclick="openModal('${p.id}')" style="background-image:url('${p.imageUrl||''}')">
       <span class="place-status-tag ${p.status==='planned'?'booked':'maybe'}">${p.status==='planned'?t('planned'):t('maybe')}</span>
-      <span class="click-hint">Click</span>
+      <span class="click-hint">${t('clickHint')}</span>
       <div class="place-img-overlay"><span class="emoji">${p.emoji}</span><h4>${p.name}</h4><p class="teaser">${p.teaser||''}</p></div>
     </div>`).join('')}</div>`;
 }
@@ -979,22 +1152,22 @@ function renderCar(){
   if(!c.needed){ el('car-content').innerHTML=`<div class="alert info"><span class="icon">ℹ️</span><div>${t('noCarNeeded')}</div></div>`; return; }
   el('car-tab-btn').style.display='block';
   el('car-content').innerHTML=`
-    <div class="alert info"><span class="icon">🚗</span><div><strong>Car rental:</strong> ${c.note||''}</div></div>
+    <div class="alert info"><span class="icon">🚗</span><div><strong>${t('carRentalLbl')}</strong> ${c.note||''}</div></div>
     <div class="card"><h2>📅 ${t('rentalDetails')}</h2><table class="info-table">
       <tr><td>${t('pickupDate')}</td><td>${c.pickupDate||'—'}</td></tr>
       <tr><td>${t('returnDate')}</td><td>${c.returnDate||'—'}</td></tr>
       <tr><td>${t('pickupLocation')}</td><td>${c.pickupLocation||'—'}</td></tr>
     </table></div>
-    <div class="card"><h2>🚗 Vehicle options</h2>${c.options.map(o=>`
+    <div class="card"><h2>${t('vehicleOptionsLbl')}</h2>${c.options.map(o=>`
       <div class="car-option-card ${o.recommended?'recommended':''}">
-        ${o.recommended?'<div class="car-badge">⭐ RECOMMENDED</div>':''}
+        ${o.recommended?`<div class="car-badge">${t('recommendedLbl')}</div>`:''}
         <div class="car-name">${o.name}</div>
         <div class="car-class">${o.class}</div>
         <div class="car-price">${o.price}</div>
         <div class="car-desc">${o.desc}</div>
       </div>`).join('')}</div>
     ${c.bookingTip?`<div class="alert warn"><span class="icon">💡</span><div>${c.bookingTip}</div></div>`:''}
-    <div class="card"><h2>🔗 Book online</h2>
+    <div class="card"><h2>${t('bookOnlineLbl')}</h2>
       <a class="btn-link" href="https://www.rentalcars.com" target="_blank">Rentalcars.com</a>
       <a class="btn-link" href="https://www.holidayautos.com" target="_blank">HolidayAutos</a>
       <a class="btn-link" href="https://www.europcar.com" target="_blank">Europcar</a>
@@ -1065,9 +1238,9 @@ function renderInfo(){
     `<div class="emergency-card ${i===0?'primary':''}"><div class="num">${e.number}</div><div class="ename">${e.name}</div><div class="desc">${e.desc}</div></div>`).join('');
   el('info-table').innerHTML=trip.info.map(r=>`<tr><td>${r.label}</td><td>${r.value}</td></tr>`).join('');
   el('booking-refs').innerHTML=`<table class="info-table">
-    <tr><td>Flights (${trip.flights.outbound.airline})</td><td><strong>${trip.flights.outbound.bookingRef}</strong></td></tr>
-    <tr><td>Hotel (${trip.hotel.name})</td><td><strong>${trip.hotel.bookingRef}</strong></td></tr>
-    ${trip.hotel.pin?`<tr><td>Hotel PIN</td><td><strong>${trip.hotel.pin}</strong></td></tr>`:''}
+    <tr><td>${t('flightsLbl')} (${trip.flights.outbound.airline})</td><td><strong>${trip.flights.outbound.bookingRef}</strong></td></tr>
+    <tr><td>${t('hotelLbl')} (${trip.hotel.name})</td><td><strong>${trip.hotel.bookingRef}</strong></td></tr>
+    ${trip.hotel.pin?`<tr><td>${t('hotelPinLbl')}</td><td><strong>${trip.hotel.pin}</strong></td></tr>`:''}
   </table>`;
 }
 
@@ -1080,26 +1253,46 @@ function initMap(){
   trip.places.forEach(p=>{
     if(!p.lat||!p.lng) return;
     const pIcon=L.divIcon({html:p.emoji||'📍',className:'',iconSize:[24,24]});
-    L.marker([p.lat,p.lng],{icon:pIcon}).addTo(mapInstance).bindPopup(`<strong>${p.name}</strong><br>${p.teaser||''}<br><a href="${p.mapUrl}" target="_blank">Open in Maps</a>`);
+    L.marker([p.lat,p.lng],{icon:pIcon}).addTo(mapInstance).bindPopup(`<strong>${p.name}</strong><br>${p.teaser||''}<br><a href="${p.mapUrl}" target="_blank">${t('openInMapsLbl')}</a>`);
   });
   el('map-title').textContent=t('tripMap')(trip.destination.name);
 }
 
 function init(){
   LNG = (trip.traveler && trip.traveler.language) || 'en';
-  // Update static HTML labels
+  // Translate nav labels
+  document.querySelectorAll('[data-nav-key]').forEach(span=>{
+    const key = span.getAttribute('data-nav-key');
+    if(key && I18N[LNG] && I18N[LNG][key]) span.textContent = I18N[LNG][key];
+  });
+  // Update static section labels
   if(el('lbl-packing'))   el('lbl-packing').textContent   = t('packingList');
   if(el('lbl-tips'))      el('lbl-tips').textContent      = t('generalTips');
   if(el('lbl-emergency')) el('lbl-emergency').textContent = t('emergencyContacts');
   if(el('lbl-country'))   el('lbl-country').textContent   = t('countryInfo');
   if(el('lbl-bookrefs'))  el('lbl-bookrefs').textContent  = t('bookingRefs');
-  renderHeader(); renderOverview(); renderFlights(); renderHotel();
-  renderItinerary(); renderPlaces(); renderCar(); renderPacking();
-  renderBudget(); renderTips(); renderInfo(); updateCountdown();
-  if(trip.car.needed) el('car-tab-btn').style.display='block';
-}
-document.addEventListener('DOMContentLoaded',init);
-</script>
+  if(el('map-title'))     el('map-title').textContent     = t('tripMap')(trip.destination.name);
+  if(el('map-legend'))    el('map-legend').innerHTML      = t('mapLegend');
 
+  // Render all sections
+  renderHeader();
+  renderOverview();
+  renderFlights();
+  renderHotel();
+  renderItinerary();
+  renderPlaces();
+  renderCar();
+  renderPacking();
+  renderBudget();
+  renderTips();
+  renderInfo();
+  updateCountdown();
+
+  // Show first section
+  showSection('overview', document.querySelector('nav button'));
+}
+
+window.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
-</html>                                                                                                                    
+</html>
