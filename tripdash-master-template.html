@@ -1002,6 +1002,7 @@ function renderCar(){
     </div>`;
 }
 
+function packKey(id){ return 'td_pack_'+(trip.destination&&trip.destination.name||'trip')+'_'+id; }
 function renderPacking(){
   let total=0;
   el('packing-lists').innerHTML=trip.packing.map((g,gi)=>{
@@ -1010,11 +1011,21 @@ function renderPacking(){
     }).join('');
     return `<div class="checklist-group"><h3>${g.category}</h3>${items}</div>`;
   }).join('');
-  el('pack-label').textContent=t('packed')(0,total);
+  // Restore checked state from localStorage
+  document.querySelectorAll('[id^="chk-"]').forEach(chk=>{
+    if(localStorage.getItem(packKey(chk.id))==='1'){
+      chk.checked=true;
+      chk.closest('.check-item').classList.add('checked');
+    }
+  });
+  const chked=document.querySelectorAll('[id^="ci-"] input:checked').length;
+  el('pack-label').textContent=t('packed')(chked,total);
+  if(total>0) el('pack-bar').style.width=(chked/total*100)+'%';
 }
 function toggleCheck(gi,ii){
   const ci=document.getElementById(`ci-${gi}-${ii}`), chk=ci.querySelector('input');
   ci.classList.toggle('checked',chk.checked);
+  localStorage.setItem(packKey(chk.id), chk.checked?'1':'0');
   const tot=document.querySelectorAll('[id^="ci-"]').length, chked=document.querySelectorAll('[id^="ci-"] input:checked').length;
   el('pack-label').textContent=t('packed')(chked,tot);
   el('pack-bar').style.width=(chked/tot*100)+'%';
