@@ -237,6 +237,8 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 footer{background:var(--dark);color:rgba(255,255,255,0.55);text-align:center;padding:18px;font-size:0.78rem;}
 footer strong{color:#ffd700;}
 footer a{color:#ffd700;}
+.lang-btn{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.75);padding:3px 10px;border-radius:14px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all .18s;}
+.lang-btn:hover,.lang-btn.active{background:rgba(255,255,255,0.28);color:#fff;border-color:rgba(255,255,255,0.6);}
 </style>
 </head>
 <body>
@@ -248,6 +250,7 @@ footer a{color:#ffd700;}
     <h1 id="header-title">Loading...</h1>
     <p id="header-sub"></p>
     <div class="header-badges" id="header-badges"></div>
+    <div id="lang-switcher" style="margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap"></div>
   </div>
 </header>
 <div class="countdown-bar" id="countdown">&#9203; Loading...</div>
@@ -993,7 +996,33 @@ function renderHeader(){
     ${occ?`<span class="badge" style="background:rgba(240,165,0,0.7)">${occ.icon} ${trip.occasion.description}</span>`:''}
   `;
   const langs=[{code:'en',flag:'🇬🇧',label:'EN'},{code:'no',flag:'🇳🇴',label:'NO'},{code:'ru',flag:'🇷🇺',label:'RU'},{code:'de',flag:'🇩🇪',label:'DE'},{code:'es',flag:'🇪🇸',label:'ES'},{code:'fr',flag:'🇫🇷',label:'FR'}];
+  el('lang-switcher').innerHTML=langs.map(l=>`<button class="lang-btn ${LNG===l.code?'active':''}" onclick="switchLang('${l.code}')">${l.flag} ${l.label}</button>`).join('');
   if(occ){ const ob=el('occasion-banner'); ob.textContent=occ.bannerText(trip.occasion); ob.className=`occasion-banner ${trip.occasion.type}`; ob.style.display='block'; }
+}
+
+function switchLang(code){
+  LNG = code;
+  renderHeader();
+  renderOverview();
+  renderFlights();
+  renderHotel();
+  renderItinerary();
+  renderPlaces();
+  renderCar();
+  renderBudget();
+  renderTips();
+  renderInfo();
+  document.querySelectorAll('[data-nav-key]').forEach(span=>{
+    const key = span.getAttribute('data-nav-key');
+    if(key && I18N[LNG] && I18N[LNG][key]) span.textContent = I18N[LNG][key];
+  });
+  if(el('lbl-packing'))   el('lbl-packing').textContent   = t('packingList');
+  if(el('lbl-tips'))      el('lbl-tips').textContent      = t('generalTips');
+  if(el('lbl-emergency')) el('lbl-emergency').textContent = t('emergencyContacts');
+  if(el('lbl-country'))   el('lbl-country').textContent   = t('countryInfo');
+  if(el('lbl-bookrefs'))  el('lbl-bookrefs').textContent  = t('bookingRefs');
+  if(el('map-title'))     el('map-title').textContent     = t('tripMap')(trip.destination.name);
+  if(el('map-legend'))    el('map-legend').innerHTML      = t('mapLegend');
 }
 
 
@@ -1007,7 +1036,7 @@ function renderOverview(){
   const occ=trip.occasion.type&&occasionData[trip.occasion.type];
   el('overview-alerts').innerHTML=`
     <div class="alert success"><span class="icon">✅</span><div><strong>${t('confirmedAlert')}:</strong> ${t('bookedPaid')(trip.flights.outbound.bookingRef,trip.hotel.name)}</div></div>
-    ${trip.car.needed?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> ${t('carRentalDayTrips')} ${trip.car.bookingTip||''}</div></div>`:''}
+    ${trip.car.needed?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrange')}:</strong> ${t('carRentalDayTrips')} ${trip.car.bookingTip||''}</div></div>`:''}
     ${occ?`<div class="alert occasion"><span class="icon">${occ.icon}</span><div><strong>${t('specialOccasion')}:</strong> ${trip.occasion.description} — ${t('seeTipsMsg')}</div></div>`:''}`;
   const f=trip.flights;
   el('overview-flight-out').innerHTML=`<h2>✈️ ${t('outbound')} — ${f.outbound.date}</h2>
