@@ -981,7 +981,7 @@ function updateCountdown(){
 function renderHeader(){
   el('header-flag').textContent = toFlagEmoji(trip.destination.flag);
   el('header-title').textContent = toFlagEmoji(trip.destination.flag)+' '+trip.destination.name+' '+new Date(trip.dates.departure).getFullYear();
-  const names = trip.travelers.map(t=>t.name.split(' ')[0]).join(', ');
+  const names = trip.travelers.map(t=>(t.name||'').split(' ')[0]).filter(Boolean).join(', ');
   el('header-sub').textContent = names+' · '+trip.dates.departure+' – '+trip.dates.returnDate;
   const occ = trip.occasion.type && occasionData[trip.occasion.type];
   el('header-badges').innerHTML = `
@@ -1051,7 +1051,7 @@ function renderOverview(){
 }
 
 function renderFlights(){
-  el('passenger-grid').innerHTML=trip.travelers.map(tv=>`<div style="background:${tv.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${tv.name}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${tv.role.charAt(0).toUpperCase()+tv.role.slice(1)}${tv.age?' · '+tv.age+' '+t('yrsLbl'):''}</div></div>`).join('');
+  el('passenger-grid').innerHTML=trip.travelers.map(tv=>`<div style="background:${tv.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${tv.name||'—'}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${tv.role.charAt(0).toUpperCase()+tv.role.slice(1)}${tv.age?' · '+tv.age+' '+t('yrsLbl'):''}</div></div>`).join('');
   function fc(f){ return `<div class="airline">${f.airline||'—'} · ${f.flightNumber||'—'}</div>
     <div class="flight-route">
       <div class="flight-city"><div class="code">${f.fromCode||'—'}</div><div class="name">${f.from||'—'}</div><div class="time">${f.departs||'—'}</div></div>
