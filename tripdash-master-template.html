@@ -1151,13 +1151,61 @@ function renderCar(){
   const c=trip.car;
   if(!c.needed){ el('car-content').innerHTML=`<div class="alert info"><span class="icon">ℹ️</span><div>${t('noCarNeeded')}</div></div>`; return; }
   el('car-tab-btn').style.display='block';
-  el('car-content').innerHTML=`
-    <div class="alert info"><span class="icon">🚗</span><div><strong>${t('carRentalLbl')}</strong> ${c.note||''}</div></div>
-    <div class="card"><h2>📅 ${t('rentalDetails')}</h2><table class="info-table">
-      <tr><td>${t('pickupDate')}</td><td>${c.pickupDate||'—'}</td></tr>
-      <tr><td>${t('returnDate')}</td><td>${c.returnDate||'—'}</td></tr>
-      <tr><td>${t('pickupLocation')}</td><td>${c.pickupLocation||'—'}</td></tr>
-    </table></div>
+
+  // Determine if car is already booked (has booking ref or confirmation ref)
+  const isBooked = !!(c.bookingRef || c.confirmationRef || c.supplierName);
+  const featureList = Array.isArray(c.carFeatures) ? c.carFeatures.join(' · ') : (c.carFeatures||'');
+
+  const bookedSection = isBooked ? `
+    <div class="card">
+      <h2>🚗 ${c.carClass||c.carModel||'Leiebil'}</h2>
+      ${c.carModel?`<div style="color:var(--gray-dark);margin-bottom:8px;font-style:italic">${c.carModel}</div>`:''}
+      ${featureList?`<div style="margin-bottom:12px;font-size:0.85rem;color:var(--primary)">${featureList}</div>`:''}
+      <table class="info-table">
+        ${c.bookingRef?`<tr><td>Bookingnummer</td><td><strong>${c.bookingRef}</strong></td></tr>`:''}
+        ${c.confirmationRef?`<tr><td>Bekreftelsesnr.</td><td><strong>${c.confirmationRef}</strong></td></tr>`:''}
+        ${c.supplierName?`<tr><td>Utleiefirma</td><td><strong>${c.supplierName}</strong></td></tr>`:''}
+        ${c.mainDriver?`<tr><td>Hovedsjåfør</td><td>${c.mainDriver}</td></tr>`:''}
+        ${c.daysRented?`<tr><td>Leieperiode</td><td>${c.daysRented} dager</td></tr>`:''}
+        ${c.price?`<tr><td>Pris</td><td><strong>${c.price} ${c.currency||''}</strong></td></tr>`:''}
+      </table>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#fff8e7,#fff3cc);border:2px solid #f59e0b">
+      <h2 style="color:#92400e">📅 Henting og levering</h2>
+      <table class="info-table">
+        <tr><td>🛬 Henting</td><td><strong>${c.pickupDate||'—'} kl. ${c.pickupTime||'—'}</strong><br><span style="font-size:0.85rem">${c.pickupLocation||''} ${c.pickupNote?'· '+c.pickupNote:''}</span></td></tr>
+        <tr><td>🛫 Levering</td><td><strong>${c.returnDate||'—'} kl. ${c.returnTime||'—'}</strong><br><span style="font-size:0.85rem">${c.returnLocation||c.pickupLocation||''}</span></td></tr>
+        ${c.supplierAddress?`<tr><td>📍 Adresse</td><td>${c.supplierAddress}</td></tr>`:''}
+        ${c.supplierPhone?`<tr><td>📞 Telefon</td><td><a href="tel:${c.supplierPhone}" style="color:var(--primary);font-weight:600">${c.supplierPhone}</a></td></tr>`:''}
+      </table>
+    </div>
+
+    ${c.pickupInstructions?`
+    <div class="card" style="border-left:4px solid #ef4444">
+      <h2 style="color:#991b1b">🚨 Slik henter du bilen — viktig!</h2>
+      <div style="line-height:1.7;white-space:pre-line;font-size:0.92rem">${c.pickupInstructions}</div>
+    </div>`:''}
+
+    ${c.returnInstructions?`
+    <div class="card" style="border-left:4px solid #3b82f6">
+      <h2>🔄 Levering av bilen</h2>
+      <div style="line-height:1.7;font-size:0.92rem">${c.returnInstructions}</div>
+    </div>`:''}
+
+    <div class="card">
+      <h2>💳 Viktig å vite</h2>
+      <table class="info-table">
+        ${c.depositAmount?`<tr><td>💰 Depositum</td><td><strong>${c.depositAmount}</strong> <span style="font-size:0.8rem;color:var(--gray-dark)">(reserveres på kort ved henting — refunderes etter levering)</span></td></tr>`:''}
+        ${c.excessAmount?`<tr><td>⚠️ Egenandel</td><td><strong>${c.excessAmount}</strong></td></tr>`:''}
+        ${c.acceptedCards?`<tr><td>💳 Aksepterte kort</td><td>${c.acceptedCards}</td></tr>`:''}
+        ${c.fuelPolicy?`<tr><td>⛽ Drivstoff</td><td>${c.fuelPolicy}</td></tr>`:''}
+      </table>
+      <div class="alert warn" style="margin-top:12px"><span class="icon">📋</span><div><strong>Husk å ta med:</strong> Gyldig førerkort (alle sjåfører), passet, leiedokumentet og et kredittkort i hovedsjåførens navn med nok penger til depositum.</div></div>
+    </div>` : '';
+
+  const notBookedSection = (!isBooked && c.options && c.options.length > 0) ? `
+    <div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> Leiebil er ikke bestilt ennå. ${c.bookingTip||''}</div></div>
     <div class="card"><h2>${t('vehicleOptionsLbl')}</h2>${c.options.map(o=>`
       <div class="car-option-card ${o.recommended?'recommended':''}">
         ${o.recommended?`<div class="car-badge">${t('recommendedLbl')}</div>`:''}
@@ -1166,13 +1214,12 @@ function renderCar(){
         <div class="car-price">${o.price}</div>
         <div class="car-desc">${o.desc}</div>
       </div>`).join('')}</div>
-    ${c.bookingTip?`<div class="alert warn"><span class="icon">💡</span><div>${c.bookingTip}</div></div>`:''}
     <div class="card"><h2>${t('bookOnlineLbl')}</h2>
       <a class="btn-link" href="https://www.rentalcars.com" target="_blank">Rentalcars.com</a>
       <a class="btn-link" href="https://www.holidayautos.com" target="_blank">HolidayAutos</a>
-      <a class="btn-link" href="https://www.europcar.com" target="_blank">Europcar</a>
-      <a class="btn-link" href="https://www.hertz.com" target="_blank">Hertz</a>
-    </div>`;
+    </div>` : '';
+
+  el('car-content').innerHTML = bookedSection + notBookedSection;
 }
 
 function packKey(id){ return 'td_pack_'+(trip.destination&&trip.destination.name||'trip')+'_'+id; }
