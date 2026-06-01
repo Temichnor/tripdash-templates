@@ -1068,26 +1068,26 @@ function renderFlights(){
     if(!f) return '';
     const checkinUrl=getCheckinUrl(f.airline,f.checkinUrl);
     const mapsUrl=airportMapsUrl(f.fromCode,f.from);
-    return \`<div class="flight-segment-card" style="background:#0d1b3e;border-radius:12px;padding:20px;margin-bottom:12px">
-      <div style="font-size:.8rem;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">\${label||''}</div>
-      <div class="airline" style="color:#e2e8f0;font-weight:700;margin-bottom:12px">\${f.airline||'—'} · \${f.flightNumber||'—'}</div>
+    return `<div class="flight-segment-card" style="background:#0d1b3e;border-radius:12px;padding:20px;margin-bottom:12px">
+      <div style="font-size:.8rem;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">${label||''}</div>
+      <div class="airline" style="color:#e2e8f0;font-weight:700;margin-bottom:12px">${f.airline||'—'} · ${f.flightNumber||'—'}</div>
       <div class="flight-route">
-        <div class="flight-city"><div class="code">\${f.fromCode||'—'}</div><div class="name">\${f.from||'—'}</div><div class="time">\${f.departs||'—'}</div></div>
-        <div class="flight-line"><div class="plane-line"></div><div class="duration">\${f.duration||'—'}</div></div>
-        <div class="flight-city"><div class="code">\${f.toCode||'—'}</div><div class="name">\${f.to||'—'}</div><div class="time">\${f.arrives||'—'}</div></div>
+        <div class="flight-city"><div class="code">${f.fromCode||'—'}</div><div class="name">${f.from||'—'}</div><div class="time">${f.departs||'—'}</div></div>
+        <div class="flight-line"><div class="plane-line"></div><div class="duration">${f.duration||'—'}</div></div>
+        <div class="flight-city"><div class="code">${f.toCode||'—'}</div><div class="name">${f.to||'—'}</div><div class="time">${f.arrives||'—'}</div></div>
       </div>
       <div class="flight-meta">
-        <span>📅 <strong>\${f.date||'—'}</strong></span>
-        \${f.bookingRef?\`<span>📋 Ref: <strong>\${f.bookingRef}</strong></span>\`:''}
-        \${f.terminal?\`<span>🚪 Terminal: <strong>\${f.terminal}</strong></span>\`:''}
-        \${f.seat?\`<span>💺 Seat: <strong>\${f.seat}</strong></span>\`:''}
-        \${f.checkinCloses?\`<span>⏰ Innsjekk stenger: <strong>\${f.checkinCloses}</strong></span>\`:''}
+        <span>📅 <strong>${f.date||'—'}</strong></span>
+        ${f.bookingRef?`<span>📋 Ref: <strong>${f.bookingRef}</strong></span>`:''}
+        ${f.terminal?`<span>🚪 Terminal: <strong>${f.terminal}</strong></span>`:''}
+        ${f.seat?`<span>💺 Seat: <strong>${f.seat}</strong></span>`:''}
+        ${f.checkinCloses?`<span>⏰ Innsjekk stenger: <strong>${f.checkinCloses}</strong></span>`:''}
       </div>
       <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-        <a href="\${mapsUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:rgba(255,255,255,.1);border-radius:6px;text-decoration:none;color:#e2e8f0">🗺️ \${f.from||'Flyplass'}</a>
-        \${checkinUrl?\`<a href="\${checkinUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:#1d4ed8;border-radius:6px;text-decoration:none;color:#fff">✈️ Online innsjekk</a>\`:''}
+        <a href="${mapsUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:rgba(255,255,255,.1);border-radius:6px;text-decoration:none;color:#e2e8f0">🗺️ ${f.from||'Flyplass'}</a>
+        ${checkinUrl?`<a href="${checkinUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:#1d4ed8;border-radius:6px;text-decoration:none;color:#fff">✈️ Online innsjekk</a>`:''}
       </div>
-    </div>\`;
+    </div>`;
   }
 
   // Use segments array if available (multi-leg), otherwise fall back to outbound/return
