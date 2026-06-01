@@ -237,6 +237,8 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 60px;}
 footer{background:var(--dark);color:rgba(255,255,255,0.55);text-align:center;padding:18px;font-size:0.78rem;}
 footer strong{color:#ffd700;}
 footer a{color:#ffd700;}
+
+.leaflet-div-icon-custom { background: none; border: none; cursor: pointer; font-size: 1.4rem; line-height: 1; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
 </style>
 </head>
 <body>
@@ -286,10 +288,9 @@ footer a{color:#ffd700;}
       <div id="passenger-grid" class="grid-2" style="gap:10px"></div>
     </div>
   </div>
-  <h3 style="margin:18px 0 10px;font-size:1rem">&#128747; Outbound &#8212; <span id="flights-out-date"></span></h3>
-  <div id="flight-out-card" class="flight-card"></div>
-  <h3 style="margin:22px 0 10px;font-size:1rem">&#128748; Return &#8212; <span id="flights-ret-date"></span></h3>
-  <div id="flight-ret-card" class="flight-card" style="background:linear-gradient(135deg,#1a0a1a,#3a1a3a)"></div>
+  <div id="flights-section-cards" style="margin-top:18px"></div>
+  <div style="display:none"><span id="flights-out-date"></span><span id="flights-ret-date"></span>
+  <div id="flight-out-card"></div><div id="flight-ret-card"></div></div>
   <div class="alert info" style="margin-top:18px"><span class="icon">&#8505;&#65039;</span><div id="flights-checkin-info"></div></div>
 </section>
 
@@ -602,8 +603,8 @@ const trip = {
 const occasionData = {
   birthday:{
     icon:"🎂",
-    bannerText:(o) => `🎂 ${o.person}'s Birthday on ${o.date} — Make it magical! 🎂`,
-    tipsTitle:(o) => `🎂 Birthday Tips for ${o.person}`,
+    bannerText:(o) => { const msgs={en:`🎂 ${o.person}'s Birthday on ${o.date} — Make it magical! 🎂`,no:`🎂 ${o.person}s bursdag ${o.date} — Gjør det magisk! 🎂`,ru:`🎂 День рождения ${o.person} ${o.date} — Сделайте его незабываемым! 🎂`,de:`🎂 ${o.person}s Geburtstag am ${o.date} — Macht es unvergesslich! 🎂`,es:`🎂 Cumpleaños de ${o.person} el ${o.date} — ¡Hazlo mágico! 🎂`,fr:`🎂 Anniversaire de ${o.person} le ${o.date} — Rendez-le magique! 🎂`}; return msgs[LNG]||msgs.en; },
+    tipsTitle:(o) => { const t={en:`🎂 Birthday Tips for ${o.person}`,no:`🎂 Bursdagstips for ${o.person}`,ru:`🎂 Советы ко дню рождения ${o.person}`,de:`🎂 Geburtstagstipps für ${o.person}`,es:`🎂 Consejos para el cumpleaños de ${o.person}`,fr:`🎂 Conseils d'anniversaire pour ${o.person}`}; return t[LNG]||t.en; },
     tips:(o) => [
       {icon:"🎂",text:`Call the hotel NOW to pre-arrange a birthday cake and room decoration. Most hotels offer this free or for a small charge. Always mention it at check-in too.`},
       {icon:"🍽️",text:`Book a special birthday dinner at a restaurant on the seafront. Call ahead to mention the birthday — many restaurants will add a little cake or dessert with candles for free.`},
@@ -616,8 +617,8 @@ const occasionData = {
   },
   anniversary:{
     icon:"💕",
-    bannerText:(o) => `💕 Anniversary Celebration — ${o.date} 💕`,
-    tipsTitle:(o) => `💕 Anniversary Tips`,
+    bannerText:(o) => { const m={en:`💕 Anniversary Celebration — ${o.date} 💕`,no:`💕 Jubileumsfeiringen — ${o.date} 💕`,ru:`💕 Годовщина — ${o.date} 💕`,de:`💕 Jubiläumsfeier — ${o.date} 💕`,es:`💕 Celebración de aniversario — ${o.date} 💕`,fr:`💕 Célébration d'anniversaire — ${o.date} 💕`}; return m[LNG]||m.en; },
+    tipsTitle:(o) => { const t={en:'💕 Anniversary Tips',no:'💕 Jubileumstips',ru:'💕 Советы для годовщины',de:'💕 Jubiläumstipps',es:'💕 Consejos de aniversario',fr:'💕 Conseils anniversaire'}; return t[LNG]||t.en; },
     tips:(o) => [
       {icon:"🌹",text:`Arrange flowers or champagne in the room on arrival — call the hotel 3+ days in advance. Most 4-star hotels can arrange this for €30–60.`},
       {icon:"🍷",text:`Book a romantic dinner at a fine restaurant with a sea view or rooftop terrace. Make the reservation before you travel.`},
@@ -630,8 +631,8 @@ const occasionData = {
   },
   honeymoon:{
     icon:"💍",
-    bannerText:(o) => `💍 Honeymoon in ${o.description || 'paradise'}! 💍`,
-    tipsTitle:(o) => `💍 Honeymoon Tips`,
+    bannerText:(o) => { const m={en:`💍 Honeymoon in ${o.description||'paradise'}! 💍`,no:`💍 Bryllupsreise i ${o.description||'paradis'}! 💍`,ru:`💍 Медовый месяц в ${o.description||'раю'}! 💍`,de:`💍 Flitterwochen in ${o.description||'Paradies'}! 💍`,es:`💍 Luna de miel en ${o.description||'el paraíso'}! 💍`,fr:`💍 Lune de miel à ${o.description||'paradis'}! 💍`}; return m[LNG]||m.en; },
+    tipsTitle:(o) => { const t={en:'💍 Honeymoon Tips',no:'💍 Bryllupsreisetips',ru:'💍 Советы для медового месяца',de:'💍 Flitterwochentipps',es:'💍 Consejos de luna de miel',fr:'💍 Conseils lune de miel'}; return t[LNG]||t.en; },
     tips:(o) => [
       {icon:"🛎️",text:`Always mention "honeymoon" when booking hotels, restaurants, and activities. You will often receive complimentary upgrades, welcome gifts, or special touches — just for asking.`},
       {icon:"🍾",text:`Book a private seafront restaurant dinner in advance. Request a table away from families and groups. Mention the honeymoon — a bottle of cava is often on the house.`},
@@ -675,7 +676,8 @@ const I18N = {
     rentalDetails:'Rental details', pickupDate:'Pick-up date',
     returnDate:'Return date', pickupLocation:'Pick-up location',
     passengers:'Passengers', adult:'Adult', child:'Child',
-    confirmed:'Confirmed', stillToArrange:'Still to arrange',
+    confirmed:'Confirmed', stillToArrangeAlert:'Still to arrange',
+    stillToArrange:'Still to arrange',
     beach:'🏖️ Beach', culture:'🏛️ Culture', nature:'⛰️ Nature',
     food:'🍽️ Food', activity:'🎡 Activity', shopping:'🛍️ Shopping',
     sightseeing:'🏛️ Sightseeing',
@@ -719,7 +721,8 @@ const I18N = {
     rentalDetails:'Детали аренды', pickupDate:'Дата получения',
     returnDate:'Дата возврата', pickupLocation:'Место получения',
     passengers:'Пассажиры', adult:'Взрослый', child:'Ребёнок',
-    confirmed:'Подтверждено', stillToArrange:'Осталось организовать',
+    confirmed:'Подтверждено', stillToArrangeAlert:'Осталось организовать',
+    stillToArrange:'Осталось организовать',
     beach:'🏖️ Пляж', culture:'🏛️ Культура', nature:'⛰️ Природа',
     food:'🍽️ Еда', activity:'🎡 Активности', shopping:'🛍️ Шопинг',
     sightseeing:'🏛️ Достопримечательности',
@@ -763,7 +766,8 @@ const I18N = {
     rentalDetails:'Leiebildetaljer', pickupDate:'Hentedato',
     returnDate:'Returdato', pickupLocation:'Hentested',
     passengers:'Passasjerer', adult:'Voksen', child:'Barn',
-    confirmed:'Bekreftet', stillToArrange:'Gjenstår å ordne',
+    confirmed:'Bekreftet', stillToArrangeAlert:'Gjenstår å ordne',
+    stillToArrange:'Gjenstår å ordne',
     beach:'🏖️ Strand', culture:'🏛️ Kultur', nature:'⛰️ Natur',
     food:'🍽️ Mat', activity:'🎡 Aktivitet', shopping:'🛍️ Shopping',
     sightseeing:'🏛️ Severdigheter',
@@ -807,7 +811,8 @@ const I18N = {
     rentalDetails:'Mietdetails', pickupDate:'Abholdatum',
     returnDate:'Rückgabedatum', pickupLocation:'Abholort',
     passengers:'Passagiere', adult:'Erwachsener', child:'Kind',
-    confirmed:'Bestätigt', stillToArrange:'Noch zu organisieren',
+    confirmed:'Bestätigt', stillToArrangeAlert:'Noch zu organisieren',
+    stillToArrange:'Noch zu organisieren',
     beach:'🏖️ Strand', culture:'🏛️ Kultur', nature:'⛰️ Natur',
     food:'🍽️ Essen', activity:'🎡 Aktivität', shopping:'🛍️ Einkaufen',
     sightseeing:'🏛️ Sehenswürdigkeiten',
@@ -851,7 +856,8 @@ const I18N = {
     rentalDetails:'Detalles del alquiler', pickupDate:'Fecha de recogida',
     returnDate:'Fecha de devolución', pickupLocation:'Lugar de recogida',
     passengers:'Pasajeros', adult:'Adulto', child:'Niño',
-    confirmed:'Confirmado', stillToArrange:'Por organizar',
+    confirmed:'Confirmado', stillToArrangeAlert:'Por organizar',
+    stillToArrange:'Por organizar',
     beach:'🏖️ Playa', culture:'🏛️ Cultura', nature:'⛰️ Naturaleza',
     food:'🍽️ Comida', activity:'🎡 Actividad', shopping:'🛍️ Compras',
     sightseeing:'🏛️ Turismo',
@@ -895,7 +901,8 @@ const I18N = {
     rentalDetails:'Détails de la location', pickupDate:'Date de prise en charge',
     returnDate:'Date de retour', pickupLocation:'Lieu de prise en charge',
     passengers:'Passagers', adult:'Adulte', child:'Enfant',
-    confirmed:'Confirmé', stillToArrange:"À organiser",
+    confirmed:'Confirmé', stillToArrangeAlert:"À organiser",
+    stillToArrange:"À organiser",
     beach:'🏖️ Plage', culture:'🏛️ Culture', nature:'⛰️ Nature',
     food:'🍽️ Nourriture', activity:'🎡 Activité', shopping:'🛍️ Shopping',
     sightseeing:'🏛️ Tourisme',
@@ -967,7 +974,7 @@ function catLabel(c){
   const map={beach:t('beach'),culture:t('culture'),nature:t('nature'),food:t('food'),activity:t('activity'),shopping:t('shopping'),sightseeing:t('sightseeing')};
   return map[c]||c;
 }
-function stars(n){ return '⭐'.repeat(n||4); }
+function stars(n){ if(!n) return ''; const s=Math.min(parseInt(n)||0,5); return s>0?'⭐'.repeat(s):''; }
 
 function updateCountdown(){
   const dep = new Date(trip.dates.departure), now = new Date();
@@ -1006,8 +1013,8 @@ function renderOverview(){
     <div class="stat-box"><div class="num" style="color:var(--secondary)">${trip.budget.currency} ${paid.toLocaleString()}</div><div class="lbl">${t('confirmedPaid')}</div><div class="sub">of ${trip.budget.currency} ${tot.toLocaleString()} budget</div></div>`;
   const occ=trip.occasion.type&&occasionData[trip.occasion.type];
   el('overview-alerts').innerHTML=`
-    <div class="alert success"><span class="icon">✅</span><div><strong>${t('confirmedAlert')}:</strong> ${t('bookedPaid')(trip.flights.outbound.bookingRef,trip.hotel.name)}</div></div>
-    ${trip.car.needed?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> ${t('carRentalDayTrips')} ${trip.car.bookingTip||''}</div></div>`:''}
+    <div class="alert success"><span class="icon">✅</span><div><strong>${t('confirmedAlert')}:</strong> ${t('bookedPaid')((trip.flights.outbound&&trip.flights.outbound.bookingRef)||'—',(trip.hotel&&trip.hotel.name)||'—')}</div></div>
+    ${(trip.car.needed && !trip.car.booked && !trip.car.bookingRef && !trip.car.confirmationRef)?`<div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> ${t('carRentalDayTrips')} ${trip.car.bookingTip||''}</div></div>`:''}
     ${occ?`<div class="alert occasion"><span class="icon">${occ.icon}</span><div><strong>${t('specialOccasion')}:</strong> ${trip.occasion.description} — ${t('seeTipsMsg')}</div></div>`:''}`;
   const f=trip.flights;
   el('overview-flight-out').innerHTML=`<h2>✈️ ${t('outbound')} — ${f.outbound.date}</h2>
@@ -1052,68 +1059,134 @@ function renderOverview(){
 
 function renderFlights(){
   el('passenger-grid').innerHTML=trip.travelers.map(tv=>`<div style="background:${tv.role==='adult'?'#f8f4ee':'#fff8e7'};border-radius:9px;padding:12px"><div style="font-weight:700">${tv.name||'—'}</div><div style="font-size:0.78rem;color:#666;margin-top:2px">${tv.role.charAt(0).toUpperCase()+tv.role.slice(1)}${tv.age?' · '+tv.age+' '+t('yrsLbl'):''}</div></div>`).join('');
-  function fc(f){ return `<div class="airline">${f.airline||'—'} · ${f.flightNumber||'—'}</div>
-    <div class="flight-route">
-      <div class="flight-city"><div class="code">${f.fromCode||'—'}</div><div class="name">${f.from||'—'}</div><div class="time">${f.departs||'—'}</div></div>
-      <div class="flight-line"><div class="plane-line"></div><div class="duration">${f.duration||'—'}</div></div>
-      <div class="flight-city"><div class="code">${f.toCode||'—'}</div><div class="name">${f.to||'—'}</div><div class="time">${f.arrives||'—'}</div></div>
-    </div>
-    <div class="flight-meta">
-      <span>📅 <strong>${f.date||'—'}</strong></span>
-      <span>📋 Ref: <strong>${f.bookingRef||'—'}</strong></span>
-      ${f.terminal?`<span>🚪 Terminal: <strong>${f.terminal}</strong></span>`:''}
-      ${f.seat?`<span>💺 Seat: <strong>${f.seat}</strong></span>`:''}
-    </div>`; }
-  el('flights-out-date').textContent=trip.flights.outbound.date;
-  el('flights-ret-date').textContent=trip.flights.return.date;
-  el('flight-out-card').innerHTML=fc(trip.flights.outbound);
-  el('flight-ret-card').innerHTML=fc(trip.flights.return);
-  el('flights-checkin-info').innerHTML=trip.flights.outbound.checkinUrl
-    ?`${t('onlineCheckinLbl')} <a href="${trip.flights.outbound.checkinUrl}" target="_blank">${trip.flights.outbound.checkinUrl}</a> · ${t('bookingRefLbl')}: <strong>${trip.flights.outbound.bookingRef}</strong>`
-    :`${t('bookingRefLbl')}: <strong>${trip.flights.outbound.bookingRef}</strong> · ${t('checkinOpensTxt')}`;
-}
+  
+  const checkinUrls = {sunclass:'https://www.sunclassairlines.com',norwegian:'https://www.norwegian.com/en/check-in',sas:'https://www.flysas.com/en/check-in',wideroe:'https://www.wideroe.no/en/check-in',tap:'https://www.flytap.com/en/check-in',ryanair:'https://www.ryanair.com/en/check-in',easyjet:'https://www.easyjet.com/en/check-in',lufthansa:'https://www.lufthansa.com/en/check-in',klm:'https://www.klm.com/en/check-in',british:'https://www.britishairways.com/en-gb/information/airport-and-flight-information/check-in',wizz:'https://wizzair.com/en-gb/information-and-services/check-in',vueling:'https://www.vueling.com/en/flight-management/online-check-in',portugalia:'https://www.flytap.com/en/check-in',finnair:'https://www.finnair.com/en/check-in'};
+  function getCheckinUrl(airline, existing){ if(existing)return existing; if(!airline)return null; const al=airline.toLowerCase(); for(const[k,u]of Object.entries(checkinUrls)){if(al.includes(k))return u;} return null; }
+  function airportMapsUrl(code,name){ return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent((name||code||'')+ ' airport'); }
 
+  function fc(f, label){
+    if(!f) return '';
+    const checkinUrl=getCheckinUrl(f.airline,f.checkinUrl);
+    const mapsUrl=airportMapsUrl(f.fromCode,f.from);
+    return \`<div class="flight-segment-card" style="background:#0d1b3e;border-radius:12px;padding:20px;margin-bottom:12px">
+      <div style="font-size:.8rem;color:#94a3b8;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">\${label||''}</div>
+      <div class="airline" style="color:#e2e8f0;font-weight:700;margin-bottom:12px">\${f.airline||'—'} · \${f.flightNumber||'—'}</div>
+      <div class="flight-route">
+        <div class="flight-city"><div class="code">\${f.fromCode||'—'}</div><div class="name">\${f.from||'—'}</div><div class="time">\${f.departs||'—'}</div></div>
+        <div class="flight-line"><div class="plane-line"></div><div class="duration">\${f.duration||'—'}</div></div>
+        <div class="flight-city"><div class="code">\${f.toCode||'—'}</div><div class="name">\${f.to||'—'}</div><div class="time">\${f.arrives||'—'}</div></div>
+      </div>
+      <div class="flight-meta">
+        <span>📅 <strong>\${f.date||'—'}</strong></span>
+        \${f.bookingRef?\`<span>📋 Ref: <strong>\${f.bookingRef}</strong></span>\`:''}
+        \${f.terminal?\`<span>🚪 Terminal: <strong>\${f.terminal}</strong></span>\`:''}
+        \${f.seat?\`<span>💺 Seat: <strong>\${f.seat}</strong></span>\`:''}
+        \${f.checkinCloses?\`<span>⏰ Innsjekk stenger: <strong>\${f.checkinCloses}</strong></span>\`:''}
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <a href="\${mapsUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:rgba(255,255,255,.1);border-radius:6px;text-decoration:none;color:#e2e8f0">🗺️ \${f.from||'Flyplass'}</a>
+        \${checkinUrl?\`<a href="\${checkinUrl}" target="_blank" style="font-size:12px;padding:5px 10px;background:#1d4ed8;border-radius:6px;text-decoration:none;color:#fff">✈️ Online innsjekk</a>\`:''}
+      </div>
+    </div>\`;
+  }
+
+  // Use segments array if available (multi-leg), otherwise fall back to outbound/return
+  const segs = (trip.flights.segments && trip.flights.segments.length > 0) ? trip.flights.segments : null;
+  const ob = trip.flights.outbound, ret = trip.flights.return;
+
+  let flightHTML = '';
+  if (segs && segs.length > 2) {
+    // Multi-leg: show all segments
+    const labels = { outbound: t('outbound'), connecting: '🔄 Mellomstopp / Connecting', return: t('return_') };
+    segs.forEach((s,i) => {
+      const dir = s.direction || (i===0?'outbound':i===segs.length-1?'return':'connecting');
+      const label = '✈️ ' + (labels[dir] || dir) + ' — ' + (s.date||'');
+      flightHTML += fc(s, label);
+    });
+  } else {
+    // Standard 2-leg
+    if(ob) { if(el('flights-out-date')) el('flights-out-date').textContent=ob.date||'—'; flightHTML += fc(ob, '✈️ '+t('outbound')+' — '+(ob.date||'')); }
+    if(ret) { if(el('flights-ret-date')) el('flights-ret-date').textContent=ret.date||'—'; flightHTML += fc(ret, '🛬 '+t('return_')+' — '+(ret.date||'')); }
+  }
+
+  // Replace the static flight cards with dynamic HTML
+  const flightSection = el('flights-section-cards');
+  if(flightSection) { flightSection.innerHTML = flightHTML; }
+  else {
+    // Fallback: set individual cards if they exist
+    if(el('flight-out-card')) el('flight-out-card').innerHTML = ob?fc(ob,'').replace('flight-segment-card',''):'';
+    if(el('flight-ret-card')) el('flight-ret-card').innerHTML = ret?fc(ret,'').replace('flight-segment-card',''):'';
+  }
+
+  const checkinUrl = ob ? getCheckinUrl(ob.airline, ob.checkinUrl) : null;
+  if(el('flights-checkin-info')) el('flights-checkin-info').innerHTML = checkinUrl
+    ?`${t('onlineCheckinLbl')} <a href="${checkinUrl}" target="_blank">${checkinUrl}</a>`
+    :(ob?`${t('bookingRefLbl')}: <strong>${ob.bookingRef||'—'}</strong> · ${t('checkinOpensTxt')}`:'');
+}
 function renderHotel(){
-  const h=trip.hotel;
-  el('hotel-main-card').innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px">
-      <div><h3>${stars(h.stars)} ${h.name}</h3><p style="opacity:.8;margin-top:3px;font-size:.85rem">📍 ${h.address}</p></div>
-      <div style="background:rgba(255,255,255,0.15);border-radius:9px;padding:9px 14px;text-align:center"><div style="font-size:1.3rem;font-weight:800">${trip.dates.nights}</div><div style="font-size:.72rem;opacity:.8">${t('nightsLbl')}</div></div>
-    </div>
-    <div class="hotel-dates" style="margin-top:18px">
-      <div class="hotel-date-item"><div class="label">${t('checkInLbl')}</div><div class="value">${h.checkIn}</div><div class="time">${t('fromLbl')(h.checkInTime)}</div></div>
-      <div class="hotel-date-item"><div class="label">${t('checkOutLbl')}</div><div class="value">${h.checkOut}</div><div class="time">${t('byLbl')(h.checkOutTime)}</div></div>
-      <div class="hotel-date-item"><div class="label">${t('roomLbl')}</div><div class="value">${h.roomType}</div><div class="time">${h.board}</div></div>
-      <div class="hotel-date-item"><div class="label">${t('guestsLbl')}</div><div class="value">${trip.travelers.length}</div><div class="time">${t('allAges')}</div></div>
-    </div>
-    <div class="hotel-info-row">
-      <span>📋 Ref: <strong>${h.bookingRef}</strong></span>
-      ${h.pin?`<span>🔐 PIN: <strong>${h.pin}</strong></span>`:''}
-      <span>💳 <strong>${h.price}</strong></span>
-      <span>📜 ${h.cancelPolicy}</span>
-    </div>`;
-  if(el('lbl-price-breakdown')) el('lbl-price-breakdown').innerHTML='&#128176; '+t('priceBreakdownLbl').replace('💰 ','');
-  if(el('lbl-quick-info')) el('lbl-quick-info').innerHTML='&#128203; '+t('quickInfoLbl').replace('📋 ','');
-  if(el('lbl-location-contact')) el('lbl-location-contact').innerHTML='&#128205; '+t('locationLbl').replace('📍 ','');
-  el('hotel-price-breakdown').innerHTML=`
-    <div class="cost-row"><span class="cost-label">${trip.dates.nights} ${t('nightsLbl')}</span><span class="cost-amount">${h.price}</span></div>
-    <div class="cost-row"><span class="cost-label">${t('boardLbl')}</span><span class="cost-amount">${h.board}</span></div>
-    <div class="cost-row total"><span class="cost-label">${t('totalLbl')}</span><span class="cost-amount">${h.price} ${t('paidLbl')}</span></div>`;
-  el('hotel-quick-info').innerHTML=`<table class="info-table">
-    <tr><td>${t('checkInLbl')}</td><td>${t('fromLbl')(h.checkInTime)}</td></tr>
-    <tr><td>${t('checkOutLbl')}</td><td>${t('byLbl')(h.checkOutTime)}</td></tr>
-    <tr><td>${t('boardLbl')}</td><td>${h.board}</td></tr>
-    <tr><td>${t('bookingRefLbl')}</td><td>${h.bookingRef}</td></tr>
-    ${h.pin?`<tr><td>${t('pinLbl')}</td><td><strong>${h.pin}</strong></td></tr>`:''}
-    <tr><td>${t('cancellationLbl')}</td><td>${h.cancelPolicy}</td></tr>
-    </table>`;
-  el('hotel-location-info').innerHTML=`<table class="info-table">
-    <tr><td>${t('addressLbl')}</td><td>${h.address}</td></tr>
-    ${h.phone?`<tr><td>${t('phoneLbl')}</td><td><a href="tel:${h.phone}">${h.phone}</a></td></tr>`:''}
-    </table>
-    <div style="margin-top:12px"><a class="btn-link maps" href="${h.mapUrl}" target="_blank">${t('viewMapsBtn')}</a></div>`;
-}
+  // Support both trip.hotels[] array (multi-stay) and trip.hotel (single)
+  const hotelList = (trip.hotels && trip.hotels.length > 0) ? trip.hotels : (trip.hotel ? [trip.hotel] : []);
+  if (!hotelList.length) return;
 
+  function renderOneHotel(h, idx, total) {
+    if (!h || !h.name) return '';
+    const nights = (()=>{const c=h.checkIn,o=h.checkOut;if(c&&o){const n=Math.round((new Date(o)-new Date(c))/(864e5));if(n>0)return n;}return null;})();
+    const titlePrefix = total > 1 ? `<div style="font-size:.78rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">🏠 ${t('hotelLbl')} ${idx+1} / ${total}</div>` : '';
+    return `${titlePrefix}
+    <div class="hotel-header">
+      <div><h3>${stars(h.stars)} ${h.name}</h3><p style="opacity:.8;margin-top:3px;font-size:.85rem">📍 ${h.address||'—'}</p></div>
+      ${nights?`<div style="background:var(--accent);color:white;border-radius:9px;padding:9px 14px;text-align:center"><div style="font-size:1.3rem;font-weight:800">${nights}</div><div style="font-size:.72rem;opacity:.8">${t('nightsLbl')}</div></div>`:''}
+    </div>
+    <div class="hotel-dates">
+      <div class="hotel-date-item"><div class="label">${t('checkInLbl')}</div><div class="date">${h.checkIn||'—'}</div><div class="time">${h.checkInTime?t('fromLbl')(h.checkInTime):''}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('checkOutLbl')}</div><div class="date">${h.checkOut||'—'}</div><div class="time">${h.checkOutTime?t('byLbl')(h.checkOutTime):''}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('roomLbl')}</div><div class="date">${h.roomType||'—'}</div><div class="time">${h.board||''}</div></div>
+      <div class="hotel-date-item"><div class="label">${t('guestsLbl')}</div><div class="date">${trip.travelers.length}</div><div class="time">${t('allAges')}</div></div>
+    </div>
+    <div class="hotel-booking-strip">
+      📋 Ref: <strong>${h.bookingRef||'—'}</strong>
+      ${h.pin?` 🔐 ${t('pinLbl')}: <strong>${h.pin}</strong>`:''}
+      ${h.price?` 💳 ${h.price}${h.currency?' '+h.currency:''} ✅ ${t('paidLbl')}`:''}
+    </div>
+    ${h.cancelPolicy?`<div style="font-size:.8rem;color:#64748b;padding:6px 0">📄 ${h.cancelPolicy}</div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+      <div>
+        <h4 style="font-size:.85rem;margin-bottom:8px">💰 ${t('priceBreakdownLbl').replace('💰 ','')}</h4>
+        <table class="info-table">
+          <tr><td>${nights||'—'} ${t('nightsLbl')}</td><td>${h.price||'—'}</td></tr>
+          <tr><td>${t('boardLbl')}</td><td>${h.board||'—'}</td></tr>
+          <tr><td><strong>${t('totalLbl')}</strong></td><td><strong>${h.price||'—'}</strong> ${h.price?'✅ '+t('paidLbl'):''}</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4 style="font-size:.85rem;margin-bottom:8px">📋 ${t('quickInfoLbl').replace('📋 ','')}</h4>
+        <table class="info-table">
+          ${h.checkInTime?`<tr><td>${t('checkInLbl')}</td><td>${t('fromLbl')(h.checkInTime)}</td></tr>`:''}
+          ${h.checkOutTime?`<tr><td>${t('checkOutLbl')}</td><td>${t('byLbl')(h.checkOutTime)}</td></tr>`:''}
+          ${h.board?`<tr><td>${t('boardLbl')}</td><td>${h.board}</td></tr>`:''}
+          ${h.bookingRef?`<tr><td>${t('bookingRefLbl')}</td><td>${h.bookingRef}</td></tr>`:''}
+          ${h.pin?`<tr><td>${t('hotelPinLbl')}</td><td><strong>${h.pin}</strong></td></tr>`:''}
+          ${h.cancelPolicy?`<tr><td>${t('cancellationLbl')}</td><td style="font-size:.8rem">${h.cancelPolicy}</td></tr>`:''}
+        </table>
+      </div>
+    </div>
+    ${(h.lat&&h.lng)?`<div style="margin-top:12px"><a class="btn-link" href="${h.mapUrl||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(h.name+' '+h.address)}" target="_blank">🗺️ ${t('openInMapsLbl')}</a></div>`:''}
+    ${h.phone?`<div style="margin-top:8px;font-size:.85rem">📞 ${t('phoneLbl')}: <a href="tel:${h.phone}">${h.phone}</a></div>`:''}`;
+  }
+
+  const allHotelHTML = hotelList.map((h, i) => 
+    `<div class="card" style="${i > 0 ? 'margin-top:16px;border-top:3px solid var(--secondary)' : ''}">${renderOneHotel(h, i, hotelList.length)}</div>`
+  ).join('');
+  
+  el('hotel-main-card').innerHTML = allHotelHTML;
+
+  // Location map for first hotel
+  if(hotelList[0] && hotelList[0].lat && hotelList[0].lng) {
+    if(el('hotel-location-info')) el('hotel-location-info').innerHTML = `<table class="info-table">
+      ${hotelList.map((h,i) => h.address ? `<tr><td>${hotelList.length>1?'🏠 '+(i+1)+': ':'📍'}${h.name}</td><td><a href="${h.mapUrl||'#'}" target="_blank">${h.address}</a></td></tr>` : '').join('')}
+    </table>`;
+  }
+}
 function renderItinerary(){
   el('itinerary-nights').textContent=t('fullItinerary')(trip.dates.nights,trip.destination.name);
   el('itinerary-timeline').innerHTML=trip.itinerary.map(d=>{
@@ -1136,7 +1209,7 @@ function renderPlaces(){
 function renderPlaceGrid(f){
   const ps=f==='all'?trip.places:trip.places.filter(p=>p.category===f);
   el('places-grid-wrap').innerHTML=`<div class="grid-3">${ps.map(p=>`
-    <div class="place-img-card" onclick="openModal('${p.id}')" style="background-image:url('${p.imageUrl||''}')">
+    <div class="place-img-card" onclick="openModal('${p.id}')" style="background-image:url('${p.imageUrl||('https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&q=80&auto=format')}')">
       <span class="place-status-tag ${p.status==='planned'?'booked':'maybe'}">${p.status==='planned'?t('planned'):t('maybe')}</span>
       <span class="click-hint">${t('clickHint')}</span>
       <div class="place-img-overlay"><span class="emoji">${p.emoji}</span><h4>${p.name}</h4><p class="teaser">${p.teaser||''}</p></div>
@@ -1206,7 +1279,7 @@ function renderCar(){
 
   const notBookedSection = (!isBooked && c.options && c.options.length > 0) ? `
     <div class="alert warn"><span class="icon">⚠️</span><div><strong>${t('stillToArrangeAlert')}:</strong> Leiebil er ikke bestilt ennå. ${c.bookingTip||''}</div></div>
-    <div class="card"><h2>${t('vehicleOptionsLbl')}</h2>${c.options.map(o=>`
+    <div class="card"><h2>${t('vehicleOptionsLbl')}</h2>${(c.options||[]).map(o=>`
       <div class="car-option-card ${o.recommended?'recommended':''}">
         ${o.recommended?`<div class="car-badge">${t('recommendedLbl')}</div>`:''}
         <div class="car-name">${o.name}</div>
@@ -1215,8 +1288,10 @@ function renderCar(){
         <div class="car-desc">${o.desc}</div>
       </div>`).join('')}</div>
     <div class="card"><h2>${t('bookOnlineLbl')}</h2>
-      <a class="btn-link" href="https://www.rentalcars.com" target="_blank">Rentalcars.com</a>
-      <a class="btn-link" href="https://www.holidayautos.com" target="_blank">HolidayAutos</a>
+      <a class="btn-link" href="https://www.rentalcars.com/SearchResults.do?affiliateCode=&preflang=no" target="_blank">🚗 Rentalcars.com</a>
+      <a class="btn-link" href="https://www.autoeurope.no" target="_blank">🚙 AutoEurope</a>
+      <a class="btn-link" href="https://www.holidayautos.com" target="_blank">🚕 HolidayAutos</a>
+      <a class="btn-link" href="https://www.europcar.com" target="_blank">🏎️ Europcar</a>
     </div>` : '';
 
   el('car-content').innerHTML = bookedSection + notBookedSection;
@@ -1251,20 +1326,52 @@ function toggleCheck(gi,ii){
   el('pack-bar').style.width=(chked/tot*100)+'%';
 }
 
+function getBudgetKey(cat){ return 'td_budget_'+(trip.destination&&trip.destination.name||'trip')+'_'+cat.replace(/[^a-z0-9]/gi,''); }
+function loadBudgetSpent(cat){ const v=parseFloat(localStorage.getItem(getBudgetKey(cat))); return isNaN(v)?0:v; }
+function saveBudgetSpent(cat,val){ localStorage.setItem(getBudgetKey(cat),val); }
+function updateBudgetTotals(){
+  const cur=trip.budget.currency;
+  let totalPaid=0, totalBudget=0;
+  trip.budget.items.forEach(i=>{
+    const manual=loadBudgetSpent(i.category);
+    const paid=i.paid+manual; totalPaid+=paid; totalBudget+=i.budgeted;
+    const pct=Math.min(Math.round((paid/i.budgeted)*100)||0,100);
+    const row=document.getElementById('brow-'+(i.category||'').replace(/[^a-z0-9]/gi,'').slice(0,12));
+    if(row){
+      row.querySelector('.budget-bar').style.width=pct+'%';
+      row.querySelector('.paid').textContent=cur+' '+(paid).toLocaleString();
+    }
+  });
+  const totEl=document.querySelector('.budget-total-card .big-num');
+  if(totEl) totEl.textContent=cur+' '+totalBudget.toLocaleString();
+  const paidEl=document.querySelector('.budget-total-paid');
+  if(paidEl) paidEl.textContent=cur+' '+totalPaid.toLocaleString();
+}
 function renderBudget(){
-  const cur=trip.budget.currency, tot=trip.budget.items.reduce((s,i)=>s+i.budgeted,0), paid=trip.budget.items.reduce((s,i)=>s+i.paid,0);
+  const cur=trip.budget.currency;
+  const tot=trip.budget.items.reduce((s,i)=>s+i.budgeted,0);
+  const paid=trip.budget.items.reduce((s,i)=>s+i.paid+loadBudgetSpent(i.category),0);
   el('budget-content').innerHTML=`
     <div class="budget-total-card">
       <div><div style="font-size:.82rem;opacity:.75">${t('totalBudget')}</div><div class="big-num">${cur} ${tot.toLocaleString()}</div></div>
-      <div style="text-align:right"><div style="font-size:.82rem;opacity:.75">${t('confirmedPaid')}</div><div style="font-size:1.5rem;font-weight:800;color:#86efac">${cur} ${paid.toLocaleString()}</div></div>
+      <div style="text-align:right"><div style="font-size:.82rem;opacity:.75">${t('confirmedPaid')}</div><div style="font-size:1.5rem;font-weight:800;color:#86efac" class="budget-total-paid">${cur} ${paid.toLocaleString()}</div></div>
     </div>
-    <div class="card"><h2>💰 ${t('budgetBreakdown').replace('💰 ','')}</h2>${trip.budget.items.map(i=>{
-      const pct=Math.round((i.paid/i.budgeted)*100)||0;
-      return `<div class="budget-row">
-        <div class="budget-cat">${i.category}</div>
-        <div style="flex:1;padding:0 18px"><div class="budget-bar-wrap"><div class="budget-bar" style="width:${pct}%;background:${i.color}"></div></div></div>
-        <div class="budget-amounts"><div class="paid">${cur} ${i.paid.toLocaleString()}</div><div class="total">of ${cur} ${i.budgeted.toLocaleString()}</div></div>
-      </div>`;}).join('')}</div>`;
+    <div class="card"><h2>💰 ${t('budgetBreakdown').replace('💰 ','')}</h2>
+    <div style="font-size:11px;color:#999;margin-bottom:10px;padding:6px 8px;background:#f8fafc;border-radius:6px">✏️ Du kan legge inn egne utgifter i feltet til høyre på hver rad — lagres automatisk</div>
+    ${trip.budget.items.map(i=>{
+      const manual=loadBudgetSpent(i.category);
+      const paid=i.paid+manual;
+      const pct=Math.min(Math.round((paid/i.budgeted)*100)||0,100);
+      const rowId='brow-'+(i.category||'').replace(/[^a-z0-9]/gi,'').slice(0,12);
+      return '<div class="budget-row" id="'+rowId+'">'+
+        '<div class="budget-cat">'+i.category+'</div>'+
+        '<div style="flex:1;padding:0 12px"><div class="budget-bar-wrap"><div class="budget-bar" style="width:'+pct+'%;background:'+i.color+'"></div></div></div>'+
+        '<div class="budget-amounts"><div class="paid">'+cur+' '+paid.toLocaleString()+'</div><div class="total">of '+cur+' '+i.budgeted.toLocaleString()+'</div></div>'+
+        '<div style="margin-left:8px"><input type="number" min="0" placeholder="+ brukt" title="Legg til egne utgifter" '+
+        'style="width:80px;padding:4px 6px;border:1px solid #e2e8f0;border-radius:6px;font-size:12px;text-align:right" '+
+        'value="'+(manual||'')+'" '+
+        'onchange="saveBudgetSpent('+JSON.stringify(i.category)+',parseFloat(this.value)||0);updateBudgetTotals()" /></div>'+
+        '</div>';}).join('')}</div>`;
 }
 
 function renderTips(){
@@ -1295,11 +1402,11 @@ function initMap(){
   const lat=trip.hotel.lat||trip.destination.lat, lng=trip.hotel.lng||trip.destination.lng;
   mapInstance=L.map('trip-map').setView([lat,lng],12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(mapInstance);
-  const hIcon=L.divIcon({html:'🏨',className:'',iconSize:[28,28]});
-  L.marker([trip.hotel.lat,trip.hotel.lng],{icon:hIcon}).addTo(mapInstance).bindPopup(`<strong>${trip.hotel.name}</strong><br>${trip.hotel.address}`);
+  const hIcon=L.divIcon({html:'🏨',className:'leaflet-div-icon-custom',iconSize:[32,32]});
+  (trip.hotel&&trip.hotel.lat&&trip.hotel.lng)&&L.marker([trip.hotel.lat,trip.hotel.lng],{icon:hIcon}).addTo(mapInstance).bindPopup(`<strong>${trip.hotel.name}</strong><br>${trip.hotel.address}`);
   trip.places.forEach(p=>{
     if(!p.lat||!p.lng) return;
-    const pIcon=L.divIcon({html:p.emoji||'📍',className:'',iconSize:[24,24]});
+    const pIcon=L.divIcon({html:p.emoji||'📍',className:'leaflet-div-icon-custom',iconSize:[28,28]});
     L.marker([p.lat,p.lng],{icon:pIcon}).addTo(mapInstance).bindPopup(`<strong>${p.name}</strong><br>${p.teaser||''}<br><a href="${p.mapUrl}" target="_blank">${t('openInMapsLbl')}</a>`);
   });
   el('map-title').textContent=t('tripMap')(trip.destination.name);
