@@ -989,9 +989,10 @@ function updateCountdown(){
   else b.innerHTML = `<span>${t('onHoliday')(trip.destination.name)}</span>`;
 }
 
+function flagImg(code){ if(!code) return ''; var cc=String(code).trim().toLowerCase(); if(!/^[a-z]{2}$/.test(cc)) return ''; return '<img src="https://flagcdn.com/h80/'+cc+'.png" srcset="https://flagcdn.com/h160/'+cc+'.png 2x" alt="'+cc.toUpperCase()+'" style="height:54px;border-radius:6px;box-shadow:0 2px 12px rgba(0,0,0,.5)">'; }
 function renderHeader(){
-  el('header-flag').textContent = toFlagEmoji(trip.destination.flag);
-  el('header-title').textContent = toFlagEmoji(trip.destination.flag)+' '+trip.destination.name+' '+new Date(trip.dates.departure).getFullYear();
+  el('header-flag').innerHTML = flagImg(trip.destination.flag) || ('<span>'+toFlagEmoji(trip.destination.flag)+'</span>');
+  el('header-title').textContent = trip.destination.name+' '+new Date(trip.dates.departure).getFullYear();
   const names = trip.travelers.map(t=>(t.name||'').split(' ')[0]).filter(Boolean).join(', ');
   el('header-sub').textContent = names+' · '+trip.dates.departure+' – '+trip.dates.returnDate;
   const occ = trip.occasion.type && occasionData[trip.occasion.type];
